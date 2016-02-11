@@ -1,0 +1,37 @@
+﻿@model Notes.Models.Workout
+
+@{
+    ViewBag.Title = Model.Name + " Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@Html.DisplayFor(model => model.Name) Details</h2>
+
+<div>
+    <table class="table">
+        <tr>
+            <th>
+                Exercises
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model.Exercises)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

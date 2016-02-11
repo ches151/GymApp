@@ -1,0 +1,30 @@
+﻿using Notes.Models;
+using System.Web.Http;
+using System.Web.OData.Builder;
+using System.Web.OData.Extensions;
+
+namespace Notes
+{
+    public static class WebApiConfig
+    {
+        public static void Register(HttpConfiguration config)
+        {
+            config.EnableCors();
+
+            config.MapHttpAttributeRoutes();
+
+            config.Routes.MapHttpRoute(
+                name: "DefaultApi",
+                routeTemplate: "api/{controller}/{id}",
+                defaults: new { id = RouteParameter.Optional }
+            );
+
+            ODataConventionModelBuilder builder = new ODataConventionModelBuilder();
+            builder.EntitySet<Exercise>("Exercises");
+            builder.EntitySet<ExerciseSet>("ExerciseSets");
+            builder.EntitySet<Workout>("Workouts");
+            builder.EnableLowerCamelCase();
+            config.MapODataServiceRoute("odata", "odata", builder.GetEdmModel());
+        }
+    }
+}

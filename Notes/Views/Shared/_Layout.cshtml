@@ -1,44 +1,54 @@
 ﻿<!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
-    @Styles.Render("~/Content/css")
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+    <title>@ViewBag.Title - Gym Application</title>
+@Styles.Render(
+    "~/Content/bootstrap"
+    , "~/Content/angular-material"
+    , "~/Content/css"
+)
     @Scripts.Render("~/bundles/modernizr")
 
 </head>
-<body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+<body ng-app="app">
+    <div ng-controller="WorkoutController as workoutCtrl" ng-cloak>
+        <div class="row">
+            <div class="col-xs-6">
+                <h2>Workouts</h2>
             </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                </ul>
-                @Html.Partial("_LoginPartial")
+            <div class="col-xs-6 text-right">
+                <button style="margin-top: 1em;" class="btn btn-default hidden-lg" type="button" ng-click="workoutCtrl.launchFullScreen()">Full-screen <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span></button>
             </div>
         </div>
-    </div>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
-    </div>
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
+
+        <div class="list-group">
+            <button type="button" class="list-group-item" ng-repeat="workout in workoutCtrl.workouts" ng-click="workoutCtrl.launchFullScreen()">
+                <h4>{{workout.Name}}</h4>
+                <span>{{workoutCtrl.getExercisesList(workout)}}</span>
+            </button>
+        </div>
+    </div>
+    @RenderBody()
+@section Scripts {
+    <script>
+        angular.module("app", ["gym"])
+            .constant("settings", {
+                rootUrl: "@Request.ApplicationPath",
+                appName: "My First App"
+            });
+    </script>
+}
+
+@Scripts.Render(
+    "~/bundles/jquery"
+    , "~/bundles/bootstrap"
+    , "~/bundles/angular"
+    , "~/bundles/main"
+)
     @RenderSection("scripts", required: false)
 </body>
 </html>

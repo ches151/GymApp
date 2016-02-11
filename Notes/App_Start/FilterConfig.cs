@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿using Notes.JsonNet;
+using System.Web;
 using System.Web.Mvc;
 
 namespace Notes
@@ -8,6 +9,7 @@ namespace Notes
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
             filters.Add(new HandleErrorAttribute());
+            filters.Add(new JsonNetActionFilter());
         }
     }
 }

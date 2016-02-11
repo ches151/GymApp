@@ -1,0 +1,88 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+    <title>Gym Application</title>
+    <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic'>
+    @Styles.Render(
+"~/Content/angular-material"
+, "~/Content/Site.css"
+)
+    <style type="text/css">
+        /**
+        * Hide when Angular is not yet loaded and initialized
+        */
+        [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+            display: none !important;
+        }
+    </style>
+    @Scripts.Render("~/bundles/modernizr")
+
+</head>
+<body ng-app="app" layout="row" ng-controller="WorkoutController as wc" ng-cloak>
+
+    <div flex layout="column" tabIndex="-1" role="main" class="md-whiteframe-z2">
+
+
+        <md-content flex id="content">
+            <md-list>
+                <md-list-item class="md-2-line" ng-repeat="workout in wc.workouts" ng-click="wc.startWorkout(workout, $event)" ng-class="{'selected' : workout.Id === wc.activeWorkout }">
+                    <div class="md-list-item-text">
+                        <h3>{{ workout.Name }}</h3>
+                        <h4>{{ wc.getExercisesList(workout) }}</h4>
+                    </div>
+                </md-list-item>
+            </md-list>
+        </md-content>
+
+    </div>
+
+
+    @*<div ng-controller="WorkoutController as wc" ng-cloak>
+            <div class="row">
+                <div class="col-xs-6">
+                    <h2>Workouts</h2>
+                </div>
+                <div class="col-xs-6 text-right">
+                    <button style="margin-top: 1em;" class="btn btn-default hidden-lg" type="button" ng-click="wc.launchFullScreen()">Full-screen <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span></button>
+                </div>
+            </div>
+
+
+            <div class="list-group">
+                <button type="button" class="list-group-item" ng-repeat="workout in wc.workouts" ng-click="wc.launchFullScreen()">
+                    <h4>{{workout.Name}}</h4>
+                    <span>{{wc.getExercisesList(workout)}}</span>
+                </button>
+            </div>
+        </div>*@
+
+    @Scripts.Render(
+"~/bundles/jquery"
+, "~/bundles/bootstrap"
+, "~/bundles/angular"
+, "~/bundles/main"
+)
+    <script>
+        angular.module("app", ['ngMaterial', "gym"])
+            .config(function ($mdThemingProvider, $mdIconProvider) {
+
+                $mdThemingProvider.theme('default')
+                    .primaryPalette('brown')
+                    .accentPalette('red');
+
+            })
+            .constant("settings", {
+                rootUrl: "@Request.ApplicationPath",
+                appName: "My First App"
+            });
+    </script>
+</body>
+</html>
+
+@{
+    ViewBag.Title = "My Workouts";
+    Layout = null;
+}
