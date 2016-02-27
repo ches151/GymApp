@@ -15,7 +15,7 @@ namespace Notes
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
-                        "~/Scripts/modernizr-*"));
+                        "~/app/js/modernizr-*"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/bower_components/bootstrap/dist/js/bootstrap.js"));
@@ -36,11 +36,11 @@ namespace Notes
                       "~/bower_components/angular-material/angular-material.css"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/site.css"));
+                      "~/app/css/site.css"));
 
             bundles.Add(new ScriptBundle("~/bundles/main").Include(
-                        "~/Scripts/tools.js"
-                        , "~/Scripts/app.js"
+                        "~/app/js/tools.js"
+                        , "~/app/js/app.js"
             ));
 #if !DEBUG
             BundleTable.EnableOptimizations = true;

@@ -151,6 +151,7 @@ span.name {
     bottom: 12px;
     right: 12px;/* remove this background-color assignment and customize the theme properly instead*/
     background-color: #0288D1;
+    z-index: 21;
 }
 .md-button.md-fab.g-right-bottom-button:not([disabled]):hover {
     background-color: #0288D1;
@@ -194,6 +195,7 @@ span.name {
 
 md-input-container {
     margin: 0;
+    vertical-align: top;
 }
 
 .md-headline {
@@ -231,4 +233,13 @@ md-card.g-workout:last-child {
 }
 .md-toolbar-tools [g-current-time] {
     text-align: center;
+}
+.g-input-unit {
+    width: 22%;
+}
+.g-input-weight {
+    width: 33%;
+}
+.g-input-reps {
+    width: 33%;
 }

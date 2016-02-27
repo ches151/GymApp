@@ -1,0 +1,49 @@
+﻿<md-content>
+    <md-list>
+        <div ng-repeat="ex in ctrl.exercises track by $index">
+            <md-list-item class="md-2-line" ng-hide="ex.id == ctrl.activeExercise.id" ng-click="ctrl.setActiveExercise(ex)">
+                <div class="md-list-item-text">
+                    <h3>{{ex.name}}</h3>
+                </div>
+                <md-divider ng-if="!$last"></md-divider>
+            </md-list-item>
+            <md-card id="{{ex.id}}" ng-show="ex.id == ctrl.activeExercise.id">
+                <md-card-title>
+                    <md-card-title-text>
+                        <span class="md-headline">{{ ex.name }}</span>
+                     </md-card-title-text>
+                </md-card-title>
+                <md-card-content>
+                    <div layout-gt-sm="row" ng-repeat="set in ctrl.exerciseSets[$index] track by $index">
+                        <md-input-container class="g-input-unit">
+                            <label>Unit</label>
+                            <md-select ng-model="set.unit">
+                                <md-option ng-repeat="unit in ctrl.massUnits" value="{{unit.factor}}">
+                                    {{unit.name}}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+                        <md-input-container class="g-input-weight">
+                            <input  name="weight"
+                                    type="number"
+                                    ng-model="set.weight" 
+                                    placeholder="Weight" 
+                                    style="text-align: center"
+                                    g-focus-next-on-enter 
+                                    autofocus>
+                        </md-input-container>
+                        <span style="font-size: 15pt; vertical-align: middle; line-height: 30pt;">&times;</span>
+                        <md-input-container  class="g-input-reps">
+                            <input  name="reps"
+                                    type="number"
+                                    ng-model="set.numberOfRepetitions"
+                                    ng-keydown="ctrl.onKeydown($event, $parent.$index)"
+                                    placeholder="Reps"
+                                    style="text-align: center">
+                        </md-input-container>
+                    </div>
+                </md-card-content>
+            </md-card>
+        </div>
+    </md-list>
+</md-content>

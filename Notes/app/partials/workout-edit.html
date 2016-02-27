@@ -1,0 +1,47 @@
+<md-card class="g-newcard-helper">
+    <form name="newCard" ng-submit="$event.preventDefault()">
+        <md-card-title>
+            <md-card-title-text>
+                <md-input-container class="md-block md-headline" md-no-float>
+                    <input id="workoutName"
+                            name="title"
+                            ng-model="ctrl.workout.name"
+                            placeholder="Enter workout title"
+                            g-focus-next-on-enter
+                            autocomplete="off">
+                </md-input-container>
+                <div class="md-subhead">
+                    <div ng-repeat="ex in ctrl.workout.exercises track by $index" class="g-exercise" ng-hide="true">
+                        <md-button class="md-icon-button" aria-label="Delete exercise" ng-click="ctrl.deleteExercise(ex)">
+                            <i class="material-icons md-24 delete">delete</i>
+                        </md-button>
+                        <span class="g-exercise-name">{{ ex.name }}</span>
+                    </div>
+                    <md-chips ng-model="ctrl.workout.exercises"
+                                md-autocomplete-snap
+                                md-transform-chip="ctrl.transformChip($chip)">
+                        <md-autocomplete md-selected-item="ctrl.selectedItem"
+                                            md-search-text="ctrl.searchText"
+                                            md-items="item in ctrl.querySearch(ctrl.searchText)"
+                                            md-item-text="item.name"
+                                            placeholder="Type exercises">
+                            <md-item-template>
+                                <span md-highlight-text="ctrl.searchText" md-highlight-flags="gi">{{item.name}}</span>
+                            </md-item-template>
+                        </md-autocomplete>
+                        <md-chip-template>
+                            <span>
+                                {{$chip.name}}
+                            </span>
+                        </md-chip-template>
+                    </md-chips>
+                </div>
+            </md-card-title-text>
+        </md-card-title>
+        <md-card-actions layout="row" layout-align="end center">
+            <md-button class="md-icon-button md-primary" ng-click="ctrl.saveWorkout()" aria-label="Save workout">
+                <i class="material-icons">save</i>
+            </md-button>
+        </md-card-actions>
+    </form>
+</md-card>

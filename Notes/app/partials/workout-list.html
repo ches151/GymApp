@@ -1,0 +1,28 @@
+<md-button class="md-fab g-right-bottom-button" ng-click="go('workout-new')" aria-label="Add workout">
+    <i class="material-icons">add</i>
+</md-button>
+<md-card class="g-workout"
+         id="{{workout.id}}"
+         ng-repeat="workout in ctrl.workouts | orderBy:'name'">
+    <md-card-title>
+        <md-card-title-text>
+            <span class="md-headline">{{ workout.name }}</span>
+            <div class="md-subhead">
+                <div ng-repeat="ex in workout.exercises">{{ ex.name }}</div>
+            </div>
+        </md-card-title-text>
+        <md-card-title-media>
+            <md-button class="md-fab md-mini md-accent g-start-workout" ng-click="go('workout-session/'+workout.id)" aria-label="Start workout">
+                <i class="material-icons">chevron_right</i>
+            </md-button>
+        </md-card-title-media>
+    </md-card-title>
+    <md-card-actions layout="row" layout-align="end center">
+        <md-button class="md-icon-button md-primary" ng-click="go('workouts/'+workout.id)" aria-label="Edit workout">
+            <i class="material-icons">mode_edit</i>
+        </md-button>
+        <md-button class="md-icon-button md-primary" ng-click="ctrl.deleteWorkout(workout)" aria-label="Delete workout">
+            <i class="material-icons">delete</i>
+        </md-button>
+    </md-card-actions>
+</md-card>
