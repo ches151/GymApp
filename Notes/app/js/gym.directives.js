@@ -4,18 +4,29 @@
     .directive("gFocusNextOnEnter", function() {
         return {
             restrict: "A",
-            link: function($scope, elem, attrs) {
-                elem.bind("keydown", function(e) {
-                    var focusables = jQuery("input:visible,button:visible");
+            link: function ($scope, elem) {
+                elem.bind("keydown", function (e) {
+                    var focusables = this.form;
                     var code = e.keyCode || e.which;
                     if (code === 13) {
-                        var current = focusables.index(this);
-                        var next = focusables.eq(current + 1);
-                        next = next.length ? next : focusables.eq(0);
+                        var current = Array.prototype.indexOf.call(focusables, this);
+                        var next = focusables[current + 1];
+                        next = next ? next : focusables[0];
                         next.focus();
                         e.preventDefault();
                     }
                 });
+                //elem.bind("keydown", function(e) {
+                //    var focusables = jQuery("input:visible,button:visible");
+                //    var code = e.keyCode || e.which;
+                //    if (code === 13) {
+                //        var current = focusables.index(this);
+                //        var next = focusables.eq(current + 1);
+                //        next = next.length ? next : focusables.eq(0);
+                //        next.focus();
+                //        e.preventDefault();
+                //    }
+                //});
             }
         };
     })
@@ -27,7 +38,7 @@
                     $element[0].focus();
                 });
             }
-        }
+        };
     }])
     .directive("gCurrentTime", ['$interval', 'dateFilter', function($interval, dateFilter) {
         
@@ -62,7 +73,7 @@
     ])
     .directive("gWeather", ['$interval', 'weatherService', 'tools', function($interval, weatherService, tools) {
         
-        function link(scope, element, attrs) {
+        function link(scope, element) {
             var timeoutId;
             var weatherImgUrlTemplate = 'http://openweathermap.org/img/w/{0}.png';
             var weatherImgUrl = '';

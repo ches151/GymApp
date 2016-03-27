@@ -1,10 +1,10 @@
 (function () {
     "use strict";
     angular.module("gym")
-    .controller("WorkoutListController", WorkoutListController);
-    WorkoutListController.$inject = ["$timeout", "$log", "$scope", "tools", "workoutService", "domFactory", "header"];
-    function WorkoutListController($timeout, $log, $scope, tools, workoutService, domFactory, header) {
-        $log.log("gym.WorkoutListController constructor");
+    .controller("WorkoutListCtrl", WorkoutListCtrl);
+    WorkoutListCtrl.$inject = ["$timeout", "$log", "$scope", "tools", "workoutsService", "domFactory", "header"];
+    function WorkoutListCtrl($timeout, $log, $scope, tools, workoutsService, domFactory, header) {
+        $log.log("gym.WorkoutListCtrl constructor");
         
         header.title = "Gym App";
         header.canGoBack = false;
@@ -14,7 +14,7 @@
 
         self.deleteWorkout = deleteWorkout;
 
-        workoutService
+        workoutsService
             .getWorkouts()
             .success(function getWorkoutsCallback(data) {
                     self.workouts = data.value;
@@ -28,7 +28,7 @@
                     break;
                 }
             }
-            workoutService.deleteWorkoutById(workout.id);
+            workoutsService.deleteWorkoutById(workout.id);
         }
     }
 

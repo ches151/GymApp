@@ -1,11 +1,11 @@
 (function () {
     "use strict";
     angular.module("gym")
-        .controller("WorkoutEditController", WorkoutEditController);
+        .controller("WorkoutEditCtrl", WorkoutEditCtrl);
 
-    WorkoutEditController.$inject = ["$timeout", "$log", "$window", "$scope", "$mdConstant", "$routeParams", "tools", "workoutService", "domFactory", "header"];
-    function WorkoutEditController($timeout, $log, $window, $scope, $mdConstant, $routeParams, tools, workoutService, domFactory, header) {
-        $log.log("gym.WorkoutEditController constructor");
+    WorkoutEditCtrl.$inject = ["$timeout", "$log", "$window", "$scope", "$mdConstant", "$routeParams", "tools", "workoutsService", "domFactory", "header"];
+    function WorkoutEditCtrl($timeout, $log, $window, $scope, $mdConstant, $routeParams, tools, workoutsService, domFactory, header) {
+        $log.log("gym.WorkoutEditCtrl constructor");
         
         header.canGoBack = true;
         
@@ -24,13 +24,13 @@
             exercises: []
         };
 
-        workoutService
+        workoutsService
             .getExercises()
             .success(function getExercisesCallback(data) {
                 self.exercises = data.value;
             });
 
-        workoutService
+        workoutsService
             .getWorkoutById(self.workoutId)
             .success(function getWorkoutByIdCallback(data) {
                 setWorkout(data);

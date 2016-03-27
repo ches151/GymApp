@@ -1,11 +1,11 @@
 (function () {
     "use strict";
     angular.module("gym")
-        .controller("WorkoutNewController", WorkoutNewController);
+        .controller("WorkoutNewCtrl", WorkoutNewCtrl);
 
-    WorkoutNewController.$inject = ["$timeout", "$log", "$window", "$scope", "$mdConstant", "tools", "workoutService", "domFactory", "header"];
-    function WorkoutNewController($timeout, $log, $window, $scope, $mdConstant, tools, workoutService, domFactory, header) {
-        $log.log("gym.WorkoutNewController constructor");
+    WorkoutNewCtrl.$inject = ["$timeout", "$log", "$window", "$scope", "$mdConstant", "tools", "workoutsService", "domFactory", "header"];
+    function WorkoutNewCtrl($timeout, $log, $window, $scope, $mdConstant, tools, workoutsService, domFactory, header) {
+        $log.log("gym.WorkoutNewCtrl constructor");
         
         header.title = "New workout";        
         header.canGoBack = true;
@@ -23,7 +23,7 @@
             exercises: []
         };
 
-        workoutService
+        workoutsService
             .getExercises()
             .success(function getExercisesCallback(data) {
                 if (typeof data === "undefined" || typeof data.value === "undefined") {
@@ -70,7 +70,7 @@
                 $scope.newWorkout.id = newWorkoutId;
                 setWorkoutNameIfEmpty($scope.newWorkout);
                 
-                workoutService
+                workoutsService
                     .addWorkout($scope.newWorkout)
                     .success(function (data) {
                         redirectToListOfWorkouts();

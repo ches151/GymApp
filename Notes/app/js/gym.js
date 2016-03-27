@@ -1,12 +1,13 @@
 /* global angular */
-/* global jQuery */
 
 (function () {
-    "use strict";
+    'use strict';
     angular
-    .module("gym", ["ngResource", "ngMaterial", "ngRoute", "ngAnimate", "ui.bootstrap", "tools", "gym.services", "gym.directives"])
-    .config(["$routeProvider", "$mdThemingProvider", "$mdIconProvider"
-    , function ($routeProvider, $mdThemingProvider, $mdIconProvider) {
+    .module('gym', ['ngResource', 'ngMaterial', 'ngRoute', 'ngAnimate', 'ui.bootstrap', 'tools', 'gym.services', 'gym.directives'])
+    .config(['$routeProvider', '$mdThemingProvider', '$locationProvider'
+    , function ($routeProvider, $mdThemingProvider, $locationProvider) {
+
+        //$locationProvider.html5Mode(true);
 
         $mdThemingProvider
             .theme('default')
@@ -16,64 +17,58 @@
         $routeProvider
           .when('/', {
               templateUrl: 'partials/workout-list.html',
-              controller: 'WorkoutListController',
+              controller: 'WorkoutListCtrl',
               controllerAs: 'ctrl'
           })
           .when('/workouts', {
               templateUrl: 'partials/workout-list.html',
-              controller: 'WorkoutListController',
+              controller: 'WorkoutListCtrl',
               controllerAs: 'ctrl'
           })
           .when('/workouts/:workoutId', {
               templateUrl: 'partials/workout-edit.html',
-              controller: 'WorkoutEditController',
+              controller: 'WorkoutEditCtrl',
               controllerAs: 'ctrl'
           })
           .when('/workout-new', {
               templateUrl: 'partials/workout-new.html',
-              controller: 'WorkoutNewController',
+              controller: 'WorkoutNewCtrl',
               controllerAs: 'ctrl'
           })
           .when('/workout-session/:workoutId', {
               templateUrl: 'partials/workout-session.html',
-              controller: 'WorkoutSessionController',
+              controller: 'WorkoutSessionCtrl',
               controllerAs: 'ctrl'
           })
           .otherwise({
               redirectTo: '/workouts'
           });
     }])
-    .constant("settings", {
-        rootUrl: "//192.168.100.2/Notes",
-        appName: "My First App"
+    .constant('settings', {
+        rootUrl: '//192.168.100.2/GymApp',
+        appName: 'My First App'
     })
     .run(function ($log) {
-        $log.log("gym.run");
+        $log.log('gym.run');
     });
 })();
 (function () {
-    "use strict";
-    angular.module("gym")
-    .controller("MainController", ["$log", "$scope", "$location", "$window", "domFactory", "header", 
-    function MainController($log, $scope, $location, $window, domFactory, header) {
-        $log.log("gym.MainController constructor");
+    'use strict';
+    angular.module('gym')
+    .controller('MainCtrl', ['$log', '$scope', 'header', 
+    function MainCtrl($log, $scope, header) {
+        $log.log('gym.MainCtrl constructor');
         
         var self = this;
         self.toggleFullScreen = toggleFullScreen;
         self.fullscreen = false;        
         self.getPageTitle = getPageTitle;
         self.canGoBack = canGoBack;
-        self.goBack = goBack;
-        
+        self.goBack = goBack;        
         $scope.go = go;
 
         function toggleFullScreen() {
-            if (self.fullscreen = !self.fullscreen) {
-                domFactory.launchFullscreen();
-            }
-            else {
-                domFactory.exitFullscreen();
-            }
+            self.fullscreen = header.toggleFullScreen();
         }
         
         function getPageTitle() {
@@ -85,11 +80,11 @@
         }
         
         function goBack() {
-            $window.history.back();
+            header.goBack();
         }
         
         function go(url){
-            $location.path(url);
+            header.go(url);
         }
     }]);
 })();

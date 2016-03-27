@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
     <title>Gym Application</title>
+    <!--<base href="./"/>-->
     <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic'>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="../bower_components/angular-material/angular-material.css" rel="stylesheet" />
@@ -14,7 +15,7 @@
     <script src="js/modernizr-2.8.3.js">
     </script>
 </head>
-<body layout-xs="column" layout="row" ng-cloak ng-controller="MainController as mainCtrl">
+<body layout-xs="column" layout="row" ng-cloak ng-controller="MainCtrl as mainCtrl">
     <md-content flex="100" flex-sm="100" flex-xs="100" layout="column">
         <md-toolbar>
             <div class="md-toolbar-tools" flex>
@@ -34,11 +35,9 @@
             </div>
         </md-toolbar>
         <div class="view-container">
-          <div ng-view class="view-frame"></div>
+            <div ng-view class="view-frame"></div>
         </div>
     </md-content>
-
-    <script src="../bower_components/jquery/dist/jquery.js"></script>
     <script src="../bower_components/angular/angular.js"></script>
     <script src="../bower_components/angular-route/angular-route.js"></script>
     <script src="../bower_components/angular-animate/angular-animate.js"></script>
@@ -47,7 +46,6 @@
     <script src="../bower_components/angular-messages/angular-messages.js"></script>
     <script src="../bower_components/angular-material/angular-material.js"></script>
     <script src="../bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
-    <script src="../bower_components/datajs/datajs.js"></script>
     <script src="js/tools.js"></script>
     <script src="js/gym.js"></script>
     <script src="js/gym.directives.js"></script>

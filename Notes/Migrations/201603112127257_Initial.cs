@@ -29,6 +29,7 @@ namespace Notes.Migrations
                         WorkoutId = c.Guid(nullable: false),
                         WorkoutSessionId = c.Guid(nullable: false),
                         Weight = c.Double(),
+                        Unit = c.Int(nullable: false),
                         SerialNumber = c.Int(),
                         NumberOfRepetitions = c.Int(),
                     })
@@ -57,7 +58,7 @@ namespace Notes.Migrations
                     {
                         Id = c.Guid(nullable: false),
                         DateStart = c.DateTime(nullable: false, precision: 7, storeType: "datetime2"),
-                        DateEnd = c.DateTime(nullable: false, precision: 7, storeType: "datetime2"),
+                        DateEnd = c.DateTime(precision: 7, storeType: "datetime2"),
                         RowVersion = c.Binary(nullable: false, fixedLength: true, timestamp: true, storeType: "rowversion"),
                     })
                 .PrimaryKey(t => t.Id);

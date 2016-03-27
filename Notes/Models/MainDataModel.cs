@@ -36,15 +36,15 @@
 
     }
 
-    public abstract class EntityBase {
+    public abstract class EntityBase
+    {
+        [Key]
+        public Guid Id { get; set; }
         
     }
 
     public class Exercise : EntityBase
     {
-        [Key]
-        public Guid Id { get; set; }
-
         [Required]
         [MaxLength(50, ErrorMessage ="Name must be no longer than 50 characters")]
         public string Name { get; set; }
@@ -69,9 +69,6 @@
     /// </summary>
     public class Workout : EntityBase
     {
-        [Key]
-        public Guid Id { get; set; }
-
         [Required]
         [MaxLength(50, ErrorMessage = "Name must be no longer than 50 characters")]
         public string Name { get; set; }
@@ -88,6 +85,12 @@
             DateCreated = DateTime.Now;
         }
     }
+    public enum MassUnit
+    {
+        kg = 0,
+        lb = 1
+    }
+
     /// <summary>
     /// Единичный подход.
     /// Пример: 
@@ -98,20 +101,17 @@
     /// </summary>
     public class ExerciseSet : EntityBase
     {
-        public Guid Id { get; set; }
-
         public DateTime Date { get; set; }
 
         [Timestamp]
         public byte[] RowVersion { get; set; }
 
+        [ForeignKey("Exercise")]
+        public Guid ExerciseId { get; set; }
         /// <summary>
         /// Link to exercise
         /// </summary>
         public virtual Exercise Exercise { get; set; }
-
-        [ForeignKey("Exercise")]
-        public Guid ExerciseId { get; set; }
 
 
         [ForeignKey("Workout")]
@@ -131,6 +131,8 @@
 
         public double? Weight { get; set; }
 
+        public MassUnit Unit { get; set; }
+
         public int? SerialNumber { get; set; }
 
         public int? NumberOfRepetitions { get; set; }
@@ -141,10 +143,8 @@
     /// </summary>
     public class WorkoutSession : EntityBase
     {
-        public Guid Id { get; set; }
-
         public DateTime DateStart { get; set; }
-        public DateTime DateEnd { get; set; }
+        public DateTime? DateEnd { get; set; }
 
         [Timestamp]
         public byte[] RowVersion { get; set; }

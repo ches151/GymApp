@@ -224,16 +224,16 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\Exercises2Controller.cs" />
     <Compile Include="Controllers\ExercisesController.cs" />
+    <Compile Include="Controllers\ExerciseSetsController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
-    <Compile Include="Controllers\Workouts2Controller.cs" />
     <Compile Include="Controllers\WorkoutsController.cs" />
+    <Compile Include="Controllers\WorkoutSessionsController.cs" />
     <Compile Include="JsonNet\JsonNetActionFilter.cs" />
     <Compile Include="JsonNet\JsonNetResult.cs" />
-    <Compile Include="Migrations\201602102039169_Initial.cs" />
-    <Compile Include="Migrations\201602102039169_Initial.Designer.cs">
-      <DependentUpon>201602102039169_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\201603112127257_Initial.cs" />
+    <Compile Include="Migrations\201603112127257_Initial.Designer.cs">
+      <DependentUpon>201603112127257_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\MainDataModel.cs" />
     <Compile Include="Global.asax.cs">
@@ -254,18 +254,19 @@
     <Content Include="app\js\gym.workout-list-controller.js" />
     <Content Include="app\js\gym.workout-new-controller.js" />
     <Content Include="app\js\gym.workout-session-controller.js" />
+    <Content Include="app\partials\exerciseset-one-exercise.html" />
     <Content Include="app\partials\workout-edit.html" />
     <Content Include="app\partials\workout-new.html" />
     <Content Include="app\partials\workout-session.html" />
     <Content Include="app\partials\workout-list.html" />
-    <Content Include="App_Data\TestDatabase.mdf" />
-    <Content Include="App_Data\TestDatabase_log.ldf">
-      <DependentUpon>TestDatabase.mdf</DependentUpon>
-    </Content>
     <Content Include="app\css\bootstrap-theme.css" />
     <Content Include="app\css\bootstrap-theme.min.css" />
     <Content Include="app\css\bootstrap.css" />
     <Content Include="app\css\bootstrap.min.css" />
+    <Content Include="App_Data\Database1.mdf" />
+    <Content Include="App_Data\Database1_log.ldf">
+      <DependentUpon>Database1.mdf</DependentUpon>
+    </Content>
     <Content Include="favicon.ico" />
     <Content Include="app\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -284,7 +285,7 @@
     <Content Include="app\js\gym.directives.js" />
     <Content Include="app\js\modernizr-2.8.3.js" />
     <Content Include="app\js\tools.js" />
-    <Content Include="karma.conf.js" />
+    <Content Include="test\unit\karma.conf.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -331,16 +332,18 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="test\e2e\" />
-    <Folder Include="test\unit\" />
     <Folder Include="Views\Exercises\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201602102039169_Initial.resx">
-      <DependentUpon>201602102039169_Initial.cs</DependentUpon>
+    <Content Include="package.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201603112127257_Initial.resx">
+      <DependentUpon>201603112127257_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="package.json" />
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -360,7 +363,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>51227</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost/Notes</IISUrl>
+          <IISUrl>http://localhost/GymApp</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

@@ -1,35 +1,45 @@
 ﻿(function () {
-    "use strict";
-    angular.module("gym")
-        .controller("WorkoutSessionController", WorkoutSessionController);
+    'use strict';
+    angular.module('gym')
+        .controller('WorkoutSessionCtrl', WorkoutSessionCtrl);
 
-    WorkoutSessionController.$inject = ["$timeout", "$log", "$window", "$scope", "$mdConstant", "$routeParams", "tools", "workoutService", "domFactory", "header", "massUnits"];
-    function WorkoutSessionController($timeout, $log, $window, $scope, $mdConstant, $routeParams, tools, workoutService, domFactory, header, massUnits) {
-        $log.log("gym.WorkoutSessionController constructor");
+    WorkoutSessionCtrl.$inject = ['$log', '$mdConstant', '$routeParams', '$scope', '$mdDialog', '$q', 'tools', 'header', 'massUnits', 'workoutsService', 'exerciseSetsService', 'workoutSessionsService'];
+    function WorkoutSessionCtrl($log, $mdConstant, $routeParams, $scope, $mdDialog, $q, tools, header, massUnits, workoutsService, exerciseSetsService, workoutSessionsService) {
+        $log.log("gym.WorkoutSessionCtrl constructor");
 
         header.canGoBack = true;
 
         var self = this;
 
         self.workoutId = $routeParams.workoutId;
-        self.dateStart = (new Date()).toISOString();
         self.workout = {};
-        self.activeExercise = {};
-        self.exercises = [];
-        self.exerciseSets = [];
-        self.workoutSession = {};
-        self.massUnits = massUnits;
-        self.setActiveExercise = setActiveExercise;
-        self.onKeydown = onKeydown;
+        self.workoutSession = null;
 
-        workoutService
+        /* MODEL properties */
+        self.activeExercise = {};       // View: to expand current exercise        
+        self.exercises = [];            // View: list of exercises        
+        self.exerciseSets = [];         // View: list of sets of exercises        
+        self.massUnits = massUnits;     // View: dropdown list
+
+
+        self.setActiveExercise = setActiveExercise;
+        self.showHistory = showHistory;
+        self.onKeydown = onKeydown;
+        self.onBlur = onBlur;
+
+        $scope.$on('$destroy', onDestroy);
+
+
+        workoutsService
             .getWorkoutById(self.workoutId)
-            .success(function getWorkoutByIdCallback(workout) {
-                setWorkout(workout);
-                //setWorkoutSession(workout);
-                setExerciseSets(workout);
-                setActiveExercise(self.exercises[0]);
-            });
+            .success(onWorkoutObtained);
+        
+        function onWorkoutObtained(workout) {
+            setWorkout(workout);
+            setWorkoutSession(workout);
+            setExerciseSets(workout);
+            setActiveExercise(self.exercises[0]);
+        }
 
         function setWorkout(workout) {
             header.title = workout.name;
@@ -37,89 +47,197 @@
             self.exercises = workout.exercises;
         }
 
+        function setWorkoutSession() {
+            self.workoutSession = new WorkoutSession({
+                dateStart: new Date(),
+                dateEnd: null
+            });
+            workoutSessionsService.save(self.workoutSession);
+        }
+
+        function onDestroy() {
+            endWorkoutSession();
+        }
+
+        function endWorkoutSession() {
+            self.workoutSession.dateEnd = new Date();
+            workoutSessionsService.save(self.workoutSession);
+        }
+
         function setExerciseSets(workout) {
             var sets = [];
+            var workoutSessionId = self.workoutSession.id;
             workout.exercises.forEach(function (ex, index) {
                 sets.push([new ExerciseSet({
-                    id: tools.guid(),
-                    exercise: ex,
-                    workout: workout,
+                    exerciseId: ex.id,
+                    workoutId: workout.id,
+                    workoutSessionId: workoutSessionId,
                     weight: null,
-                    unit: 1,
+                    unit: 'kg',
                     serialNumber: index,
                     numberOfRepetitions: null
                 })]);
-            }, this);
+            });
 
-
-            
             self.exerciseSets = sets;
             sets = null;
         }
 
-        function setWorkoutSession(workout) {
-            // self.workoutSession = {
-            //     id: tools.guid(),
-            //     dateStart: new Date(),
-            //     dateEnd: null,
-            //     //exerciseSets: self.exerciseSets
-            // };
+        function setActiveExercise(exercise) {
+            self.activeExercise = exercise;
         }
 
-        function setActiveExercise(exercise) {
-            //TODO write down date of the last set of the current exercise
-            self.activeExercise = exercise;
+        function showHistory(ev, exercise) {
+            var workoutSessionId = self.workoutSession.id;
+            var exerciseName = exercise.name;
+            getExerciseHistory(exercise.id, workoutSessionId)
+            .then(function (exerciseSets) {
+                $mdDialog.show({
+                    controller: ExerciseSetOneExerciseCtrl,
+                    controllerAs: 'ctrl',
+                    templateUrl: 'partials/exerciseset-one-exercise.html',
+                    parent: angular.element(document.body),
+                    targetEvent: ev,
+                    clickOutsideToClose: true,
+                    fullscreen: false,
+                    locals: {
+                        exerciseSets: exerciseSets,
+                        exerciseName: exerciseName
+                    }
+                })
+            }, function onReject(data) { $log.warn(data.message); });
+        }
+
+        function getExerciseHistory(exerciseId, workoutSessionId) {
+            var deferred = $q.defer();
+            exerciseSetsService.getPrevExerciseSessionId({
+                exerciseId: exerciseId,
+                workoutSessionId: workoutSessionId
+            },
+            function (data) {
+                if (data && data.value && data.value.length) {
+                    exerciseSetsService.getExercisesSetsFromSession({
+                        exerciseId: exerciseId,
+                        workoutSessionId: data.value[0].workoutSessionId
+                    },
+                    function (data) {
+                        if (data && data.value && data.value.length) {
+                            deferred.resolve(data.value);
+                        } else {
+                            deferred.reject({ message: 'No previous exercise sets are available'});
+                        }
+                    });
+                }
+            });
+            return deferred.promise;
         }
 
         function onKeydown(event, exerciseIndex) {
             switch (event.keyCode) {
                 case $mdConstant.KEY_CODE.ENTER:
                 case $mdConstant.KEY_CODE.TAB:
-                $log.log(event.keyCode);
                     addOneMoreSet(exerciseIndex);
                     break;
                 default:
             }
         }
-        
+
         function addOneMoreSet(exerciseIndex) {
-            var set = self.exerciseSets[exerciseIndex];
-            var lastSet = set[set.length - 1];
-            if (isSetFilled(set)) {
+            var currentExerciseSets = self.exerciseSets[exerciseIndex];
+
+            if (areAllExerciseSetsFilled(currentExerciseSets)) {
+                var lastSet = currentExerciseSets[currentExerciseSets.length - 1];
                 lastSet.date = new Date();
-                $log.log(lastSet);
-                set.push(new ExerciseSet({
-                    id: tools.guid(),
-                    exercise: lastSet.exercise,
-                    workout: lastSet.workout,
+                var workoutSessionId = self.workoutSession.id;
+
+                currentExerciseSets.push(new ExerciseSet({
+                    exerciseId: lastSet.exerciseId,
+                    workoutId: lastSet.workoutId,
+                    workoutSessionId: workoutSessionId,
                     weight: null,
                     unit: lastSet.unit,
-                    serialNumber: set.length,
+                    serialNumber: currentExerciseSets.length,
                     numberOfRepetitions: null
                 }));
             }
         }
 
-        function isSetFilled(set) {
-            if (!set) {
+        function onBlur(event, exerciseIndex, set) {
+            if (isSetFilled(set)) {
+                saveExerciseSet(set);
+            } else if (isSetEmpty(set)) {
+                deleteExerciseSet(exerciseIndex, set);
+            }
+        }
+
+        function saveExerciseSet(set) {
+            if (!set.id) {
+                set.id = tools.guid();
+                return exerciseSetsService.save(set);
+            } else {
+                return exerciseSetsService.update(set);
+            }
+        }
+
+        function deleteExerciseSet(exerciseIndex, set) {
+            var setId = set.id;
+            if (setId) {
+                exerciseSetsService.remove(setId);
+            }
+
+            var currentExerciseSets = self.exerciseSets[exerciseIndex];
+            if (currentExerciseSets.length > 1) {
+                var index = currentExerciseSets.indexOf(set);
+                currentExerciseSets.splice(index, 1);
+            }
+        }
+
+        function areAllExerciseSetsFilled(sets) {
+            if (!sets) {
                 return false;
             }
-            return set.every(function (exSet) {
-                $log.log(exSet);
-                return exSet.weight && exSet.numberOfRepetitions
-            }, this);
+            return sets.every(function (set) {
+                return isSetFilled(set);
+            });
         }
+        function isSetFilled(set) {
+            return set.weight > 0 && set.numberOfRepetitions > 0;
+        }
+        function isSetEmpty(set) {
+            return !set.weight && !set.numberOfRepetitions;
+        }
+    }
+
+    function ExerciseSetOneExerciseCtrl($mdDialog, exerciseName, exerciseSets) {
+        var self = this;
+        self.exerciseName = exerciseName;
+        self.exerciseSets = exerciseSets;
+        self.hide = function () {
+            $mdDialog.hide();
+        };
+        self.cancel = function () {
+            $mdDialog.cancel();
+        };
     }
 
     function ExerciseSet(args) {
         this.id = args.id;
         this.date = args.date;
         this.rowVersion = args.rowVersion;
-        this.exercise = args.exercise;
-        this.workout = args.workout;
+        this.exerciseId = args.exerciseId;
+        this.workoutId = args.workoutId;
+        this.workoutSessionId = args.workoutSessionId;
         this.weight = args.weight;
         this.unit = args.unit;
         this.serialNumber = args.serialNumber;
         this.numberOfRepetitions = args.numberOfRepetitions;
+    }
+
+    function WorkoutSession(args) {
+        this.id = args.id;
+        this.dateStart = args.dateStart;
+        this.dateEnd = args.dateEnd;
+        this.rowVersion = args.rowVersion;
+        this.exerciseSets = args.exerciseSets;
     }
 })();

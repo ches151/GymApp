@@ -12,26 +12,26 @@ using Notes.Models;
 namespace Notes.Controllers
 {
     [EnableCors(origins: "http://192.168.100.2:8080", headers: "*", methods: "*")]
-    public class ExercisesController : ODataController
+    public class ExerciseSetsController : ODataController
     {
         private MainDataModel db = new MainDataModel();
 
-        // GET: odata/Exercises
+        // GET: odata/ExerciseSets
         [EnableQuery]
-        public IQueryable<Exercise> GetExercises()
+        public IQueryable<ExerciseSet> GetExerciseSets()
         {
-            return db.Exercises.OrderBy(e=>e.Name);
+            return db.ExerciseSets;
         }
 
-        // GET: odata/Exercises(5)
+        // GET: odata/ExerciseSets(5)
         [EnableQuery]
-        public SingleResult<Exercise> GetExercise([FromODataUri] Guid key)
+        public SingleResult<ExerciseSet> GetExerciseSet([FromODataUri] Guid key)
         {
-            return SingleResult.Create(db.Exercises.Where(exercise => exercise.Id == key));
+            return SingleResult.Create(db.ExerciseSets.Where(exerciseSet => exerciseSet.Id == key));
         }
 
-        // PUT: odata/Exercises(5)
-        public async Task<IHttpActionResult> Put([FromODataUri] Guid key, Delta<Exercise> patch)
+        // PUT: odata/ExerciseSets(5)
+        public async Task<IHttpActionResult> Put([FromODataUri] Guid key, Delta<ExerciseSet> patch)
         {
             Validate(patch.GetEntity());
 
@@ -40,13 +40,13 @@ namespace Notes.Controllers
                 return BadRequest(ModelState);
             }
 
-            Exercise exercise = await db.Exercises.FindAsync(key);
-            if (exercise == null)
+            ExerciseSet exerciseSet = await db.ExerciseSets.FindAsync(key);
+            if (exerciseSet == null)
             {
                 return NotFound();
             }
 
-            patch.Put(exercise);
+            patch.Put(exerciseSet);
 
             try
             {
@@ -54,7 +54,7 @@ namespace Notes.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ExerciseExists(key))
+                if (!ExerciseSetExists(key))
                 {
                     return NotFound();
                 }
@@ -64,18 +64,18 @@ namespace Notes.Controllers
                 }
             }
 
-            return Updated(exercise);
+            return Updated(exerciseSet);
         }
 
-        // POST: odata/Exercises
-        public async Task<IHttpActionResult> Post(Exercise exercise)
+        // POST: odata/ExerciseSets
+        public async Task<IHttpActionResult> Post(ExerciseSet exerciseSet)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            db.Exercises.Add(exercise);
+            db.ExerciseSets.Add(exerciseSet);
 
             try
             {
@@ -83,7 +83,7 @@ namespace Notes.Controllers
             }
             catch (DbUpdateException)
             {
-                if (ExerciseExists(exercise.Id))
+                if (ExerciseSetExists(exerciseSet.Id))
                 {
                     return Conflict();
                 }
@@ -93,12 +93,12 @@ namespace Notes.Controllers
                 }
             }
 
-            return Created(exercise);
+            return Created(exerciseSet);
         }
 
-        // PATCH: odata/Exercises(5)
+        // PATCH: odata/ExerciseSets(5)
         [AcceptVerbs("PATCH", "MERGE")]
-        public async Task<IHttpActionResult> Patch([FromODataUri] Guid key, Delta<Exercise> patch)
+        public async Task<IHttpActionResult> Patch([FromODataUri] Guid key, Delta<ExerciseSet> patch)
         {
             Validate(patch.GetEntity());
 
@@ -107,13 +107,13 @@ namespace Notes.Controllers
                 return BadRequest(ModelState);
             }
 
-            Exercise exercise = await db.Exercises.FindAsync(key);
-            if (exercise == null)
+            ExerciseSet exerciseSet = await db.ExerciseSets.FindAsync(key);
+            if (exerciseSet == null)
             {
                 return NotFound();
             }
 
-            patch.Patch(exercise);
+            patch.Patch(exerciseSet);
 
             try
             {
@@ -121,7 +121,7 @@ namespace Notes.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ExerciseExists(key))
+                if (!ExerciseSetExists(key))
                 {
                     return NotFound();
                 }
@@ -131,36 +131,43 @@ namespace Notes.Controllers
                 }
             }
 
-            return Updated(exercise);
+            return Updated(exerciseSet);
         }
 
-        // DELETE: odata/Exercises(5)
+        // DELETE: odata/ExerciseSets(5)
         public async Task<IHttpActionResult> Delete([FromODataUri] Guid key)
         {
-            Exercise exercise = await db.Exercises.FindAsync(key);
-            if (exercise == null)
+            ExerciseSet exerciseSet = await db.ExerciseSets.FindAsync(key);
+            if (exerciseSet == null)
             {
                 return NotFound();
             }
 
-            db.Exercises.Remove(exercise);
+            db.ExerciseSets.Remove(exerciseSet);
             await db.SaveChangesAsync();
 
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // GET: odata/Exercises(5)/ExerciseSets
+        // GET: odata/ExerciseSets(5)/Exercise
         [EnableQuery]
-        public IQueryable<ExerciseSet> GetExerciseSets([FromODataUri] Guid key)
+        public SingleResult<Exercise> GetExercise([FromODataUri] Guid key)
         {
-            return db.Exercises.Where(m => m.Id == key).SelectMany(m => m.ExerciseSets);
+            return SingleResult.Create(db.ExerciseSets.Where(m => m.Id == key).Select(m => m.Exercise));
         }
 
-        // GET: odata/Exercises(5)/Workouts
+        // GET: odata/ExerciseSets(5)/Workout
         [EnableQuery]
-        public IQueryable<Workout> GetWorkouts([FromODataUri] Guid key)
+        public SingleResult<Workout> GetWorkout([FromODataUri] Guid key)
         {
-            return db.Exercises.Where(m => m.Id == key).SelectMany(m => m.Workouts);
+            return SingleResult.Create(db.ExerciseSets.Where(m => m.Id == key).Select(m => m.Workout));
+        }
+
+        // GET: odata/ExerciseSets(5)/WorkoutSession
+        [EnableQuery]
+        public SingleResult<WorkoutSession> GetWorkoutSession([FromODataUri] Guid key)
+        {
+            return SingleResult.Create(db.ExerciseSets.Where(m => m.Id == key).Select(m => m.WorkoutSession));
         }
 
         protected override void Dispose(bool disposing)
@@ -172,9 +179,9 @@ namespace Notes.Controllers
             base.Dispose(disposing);
         }
 
-        private bool ExerciseExists(Guid key)
+        private bool ExerciseSetExists(Guid key)
         {
-            return db.Exercises.Count(e => e.Id == key) > 0;
+            return db.ExerciseSets.Count(e => e.Id == key) > 0;
         }
     }
 }

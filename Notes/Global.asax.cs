@@ -23,8 +23,8 @@ namespace Notes
             //JsonMediaTypeFormatter jsonFormatter = formatters.FindReader(typeof(Array), new MediaTypeHeaderValue("application/json")) as JsonMediaTypeFormatter;
             //jsonFormatter.SerializerSettings.PreserveReferencesHandling = PreserveReferencesHandling.Objects;
 
-            GlobalConfiguration.Configure(WebApiConfig.Register);
             AreaRegistration.RegisterAllAreas();
+            GlobalConfiguration.Configure(WebApiConfig.Register);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);

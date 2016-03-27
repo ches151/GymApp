@@ -21,8 +21,9 @@ namespace Notes
 
             ODataConventionModelBuilder builder = new ODataConventionModelBuilder();
             builder.EntitySet<Exercise>("Exercises");
-            builder.EntitySet<ExerciseSet>("ExerciseSets");
             builder.EntitySet<Workout>("Workouts");
+            builder.EntitySet<WorkoutSession>("WorkoutSessions");
+            builder.EntitySet<ExerciseSet>("ExerciseSets");
             builder.EnableLowerCamelCase();
             config.MapODataServiceRoute("odata", "odata", builder.GetEdmModel());
         }
