@@ -1,0 +1,21 @@
+{
+    "name": "proper-gym",
+    "version": "1.0.0",
+    "description": "A proper gym application",
+    "authors": [ "Denis Malyshev <denis.malyshev.87@gmail.com>" ],
+    "private": true,
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/ches151/Notes.git"
+    },
+    "dependencies": {
+        "angular": "~1.4.8",
+        "angular-animate": "~1.4.8",
+        "angular-aria": "~1.4.8",
+        "angular-material": "~1.0.2",
+        "angular-mocks": "1.4.x",
+        "angular-resource": "~1.4.8",
+        "angular-route": "1.4.x"
+    }
+}

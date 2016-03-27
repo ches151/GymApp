@@ -1,0 +1,54 @@
+﻿<!DOCTYPE html>
+<html lang="en" ng-app="gym">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+    <title>Gym Application</title>
+    <base href="@ViewBag.AppUrl" />
+    <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic'>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+@Styles.Render(
+"~/Content/angular-material"
+, "~/Content/css"
+)
+</head>
+<body layout-xs="column" layout="row" ng-cloak ng-controller="MainCtrl as mainCtrl">
+    <md-content flex="100" flex-sm="100" flex-xs="100" layout="column">
+        <md-toolbar>
+            <div class="md-toolbar-tools" flex>
+                <md-button class="md-icon-button" aria-label="Settings">
+                    <i class="material-icons" ng-click="mainCtrl.showMenu()" ng-hide="mainCtrl.canGoBack()">menu</i>
+                    <i class="material-icons" ng-click="mainCtrl.goBack()" ng-show="mainCtrl.canGoBack()">arrow_back</i>
+                </md-button>
+                <!--h2 g-current-time="'h:mm:ss a'" flex="grow"></h2-->
+                <h2>{{mainCtrl.getPageTitle()}}</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" aria-label="Favorite" ng-click="mainCtrl.toggleFullScreen()">
+                    <i class="material-icons">{{mainCtrl.fullscreen? "fullscreen_exit":"fullscreen"}}</i>
+                </md-button>
+                <md-button class="md-icon-button" aria-label="More">
+                    <i class="material-icons">more_vert</i>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <div class="view-container">
+            <div ng-view class="view-frame"></div>
+        </div>
+    </md-content>
+@Scripts.Render(
+  "~/bundles/angular"
+, "~/bundles/main"
+)
+    <script>
+        angular.module("gym")
+            .constant("settings", {
+                rootUrl: "@ViewBag.AppUrl"
+            });
+</script>
+</body>
+</html>
+@{
+    ViewBag.Title = "Manage";
+    Layout = null;
+}
