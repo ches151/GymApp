@@ -21,8 +21,8 @@
                     <i class="material-icons" ng-click="mainCtrl.showMenu()" ng-hide="mainCtrl.canGoBack()">menu</i>
                     <i class="material-icons" ng-click="mainCtrl.goBack()" ng-show="mainCtrl.canGoBack()">arrow_back</i>
                 </md-button>
-                <!--h2 g-current-time="'h:mm:ss a'" flex="grow"></h2-->
-                <h2>{{mainCtrl.getPageTitle()}}</h2>
+                <h2 g-current-time="'h:mm:ss a'" flex="grow"></h2>
+                @*<h2>{{mainCtrl.getPageTitle()}}</h2>*@
                 <span flex></span>
                 <md-button class="md-icon-button" aria-label="Favorite" ng-click="mainCtrl.toggleFullScreen()">
                     <i class="material-icons">{{mainCtrl.fullscreen? "fullscreen_exit":"fullscreen"}}</i>
