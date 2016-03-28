@@ -8,9 +8,9 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
-using Notes.Models;
+using GymWebApp.Models;
 
-namespace Notes.Controllers
+namespace GymWebApp.Controllers
 {
     [Authorize]
     public class AccountController : Controller

@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Net.Http.Formatting;
 
-namespace Notes
+namespace GymWebApp
 {
     public class MvcApplication : System.Web.HttpApplication
     {

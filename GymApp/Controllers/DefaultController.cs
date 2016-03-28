@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace Notes.Controllers
+namespace GymWebApp.Controllers
 {
     public class DefaultController : Controller
     {

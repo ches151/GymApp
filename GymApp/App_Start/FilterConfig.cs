@@ -1,8 +1,8 @@
-﻿using Notes.JsonNet;
+﻿using GymWebApp.JsonNet;
 using System.Web;
 using System.Web.Mvc;
 
-namespace Notes
+namespace GymWebApp
 {
     public class FilterConfig
     {

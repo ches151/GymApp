@@ -1,19 +1,19 @@
-namespace Notes.Migrations
+namespace GymWebApp.Migrations
 {
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
-    using Notes.Models;
+    using GymWebApp.Models;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<Notes.Models.MainDataModel>
+    internal sealed class Configuration : DbMigrationsConfiguration<GymWebApp.Models.MainDataModel>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
         }
 
-        protected override void Seed(Notes.Models.MainDataModel context)
+        protected override void Seed(GymWebApp.Models.MainDataModel context)
         {
             var ex1 = new Exercise { Id = Guid.NewGuid(), Name = "Alternate Dumb Bell Press", DateCreated = DateTime.Now };
             var ex2 = new Exercise { Id = Guid.NewGuid(), Name = "Back Hyper Extension", DateCreated = DateTime.Now };

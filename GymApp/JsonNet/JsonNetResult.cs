@@ -6,7 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace Notes.JsonNet
+namespace GymWebApp.JsonNet
 {
     public class JsonNetResult : JsonResult
     {

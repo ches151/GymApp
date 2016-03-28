@@ -1,9 +1,9 @@
-﻿using Notes.Models;
+﻿using GymWebApp.Models;
 using System.Web.Http;
 using System.Web.OData.Builder;
 using System.Web.OData.Extensions;
 
-namespace Notes
+namespace GymWebApp
 {
     public static class WebApiConfig
     {

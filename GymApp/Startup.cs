@@ -1,8 +1,8 @@
 ﻿using Microsoft.Owin;
 using Owin;
 
-[assembly: OwinStartupAttribute(typeof(Notes.Startup))]
-namespace Notes
+[assembly: OwinStartupAttribute(typeof(GymWebApp.Startup))]
+namespace GymWebApp
 {
     public partial class Startup
     {

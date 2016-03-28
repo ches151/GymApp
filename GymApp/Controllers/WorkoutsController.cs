@@ -8,9 +8,9 @@ using System.Web.Http;
 using System.Web.Http.Cors;
 using System.Web.Http.ModelBinding;
 using System.Web.OData;
-using Notes.Models;
+using GymWebApp.Models;
 
-namespace Notes.Controllers
+namespace GymWebApp.Controllers
 {
     [EnableCors(origins: "http://192.168.100.2:8080", headers: "*", methods: "*")]
     public class WorkoutsController : ODataController

@@ -13,8 +13,8 @@
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Notes</RootNamespace>
-    <AssemblyName>Notes</AssemblyName>
+    <RootNamespace>GymApp</RootNamespace>
+    <AssemblyName>GymApp</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>false</UseIISExpress>
@@ -28,6 +28,7 @@
     <TargetFrameworkProfile />
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <ApplicationInsightsResourceId>/subscriptions/909b4f8d-22f5-4557-868a-0eeac92e25ac/resourcegroups/Gym/providers/microsoft.insights/components/GymApp</ApplicationInsightsResourceId>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -37,6 +38,10 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PublishDatabaseSettings>
+      <Objects>
+      </Objects>
+    </PublishDatabaseSettings>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -45,10 +50,56 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PublishDatabaseSettings>
+      <Objects>
+        <ObjectGroup Name="DefaultConnection-Deployment" Order="1">
+          <Destination Path="Data Source=common.cv6m4h1aksm8.us-west-2.rds.amazonaws.com,5876%3bInitial Catalog=gymapp%3bPersist Security Info=True%3bUser ID=sa%3bPassword=Q!w2e3r4t5" />
+          <Object Type="DbFullSql">
+            <PreSource Path="Data Source=.\SQLEXPRESS%3bAttachDbFilename=|DataDirectory|Database1.mdf%3bInitial Catalog=Database1%3bIntegrated Security=True%3bUser Instance=True" ScriptSchema="True" ScriptData="False" CopyAllFullTextCatalogs="False" DriDefaults="True" />
+            <Source Path="obj\Release\AutoScripts\DefaultConnection-Deployment_SchemaOnly.sql" Transacted="True" />
+          </Object>
+        </ObjectGroup>
+        <ObjectGroup Name="MainDataModel-Deployment" Order="2">
+          <Destination Path="" />
+          <Object Type="DbFullSql">
+            <PreSource Path="Data Source=.\SQLEXPRESS%3bAttachDbFilename=|DataDirectory|Database1.mdf%3bInitial Catalog=Database1%3bIntegrated Security=True%3bApplication Name=EntityFramework%3bUser Instance=True" ScriptSchema="True" ScriptData="False" CopyAllFullTextCatalogs="False" DriDefaults="True" />
+            <Source Path="obj\Release\AutoScripts\MainDataModel-Deployment_SchemaOnly.sql" Transacted="True" />
+          </Object>
+        </ObjectGroup>
+      </Objects>
+    </PublishDatabaseSettings>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Antlr3.Runtime, Version=3.5.0.2, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
       <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AI.Agent.Intercept, Version=1.2.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.Agent.Intercept.1.2.1\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AI.DependencyCollector, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.DependencyCollector.2.0.0\lib\net45\Microsoft.AI.DependencyCollector.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AI.PerfCounterCollector, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.PerfCounterCollector.2.0.0\lib\net45\Microsoft.AI.PerfCounterCollector.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AI.ServerTelemetryChannel, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.2.0.0\lib\net45\Microsoft.AI.ServerTelemetryChannel.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AI.Web, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.Web.2.0.0\lib\net45\Microsoft.AI.Web.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AI.WindowsServer, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.WindowsServer.2.0.0\lib\net45\Microsoft.AI.WindowsServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.ApplicationInsights, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.2.0.0\lib\net46\Microsoft.ApplicationInsights.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -234,6 +285,13 @@
     <Compile Include="Controllers\WorkoutSessionsController.cs" />
     <Compile Include="JsonNet\JsonNetActionFilter.cs" />
     <Compile Include="JsonNet\JsonNetResult.cs" />
+    <Compile Include="KeepAlive.aspx.cs">
+      <DependentUpon>KeepAlive.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="KeepAlive.aspx.designer.cs">
+      <DependentUpon>KeepAlive.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\201603112127257_Initial.cs" />
     <Compile Include="Migrations\201603112127257_Initial.Designer.cs">
       <DependentUpon>201603112127257_Initial.cs</DependentUpon>
@@ -251,12 +309,42 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="app\css\animations.css" />
+    <Content Include="app\css\animations.min.css">
+      <DependentUpon>animations.css</DependentUpon>
+    </Content>
+    <Content Include="app\css\Site.min.css">
+      <DependentUpon>Site.css</DependentUpon>
+    </Content>
+    <Content Include="app\js\gym.directives.min.js">
+      <DependentUpon>gym.directives.js</DependentUpon>
+    </Content>
+    <Content Include="app\js\gym.min.js">
+      <DependentUpon>gym.js</DependentUpon>
+    </Content>
     <Content Include="app\js\gym.services.js" />
+    <Content Include="app\js\gym.services.min.js">
+      <DependentUpon>gym.services.js</DependentUpon>
+    </Content>
     <Content Include="app\js\gym.workout-edit-controller.js" />
     <Content Include="app\js\gym.js" />
+    <Content Include="app\js\gym.workout-edit-controller.min.js">
+      <DependentUpon>gym.workout-edit-controller.js</DependentUpon>
+    </Content>
     <Content Include="app\js\gym.workout-list-controller.js" />
+    <Content Include="app\js\gym.workout-list-controller.min.js">
+      <DependentUpon>gym.workout-list-controller.js</DependentUpon>
+    </Content>
     <Content Include="app\js\gym.workout-new-controller.js" />
+    <Content Include="app\js\gym.workout-new-controller.min.js">
+      <DependentUpon>gym.workout-new-controller.js</DependentUpon>
+    </Content>
     <Content Include="app\js\gym.workout-session-controller.js" />
+    <Content Include="app\js\gym.workout-session-controller.min.js">
+      <DependentUpon>gym.workout-session-controller.js</DependentUpon>
+    </Content>
+    <Content Include="app\js\tools.min.js">
+      <DependentUpon>tools.js</DependentUpon>
+    </Content>
     <Content Include="app\partials\exerciseset-one-exercise.html" />
     <Content Include="app\partials\workout-edit.html" />
     <Content Include="app\partials\workout-new.html" />
@@ -266,6 +354,37 @@
     <Content Include="App_Data\Database1_log.ldf">
       <DependentUpon>Database1.mdf</DependentUpon>
     </Content>
+    <Content Include="bower_components\angular-animate\angular-animate.js" />
+    <Content Include="bower_components\angular-animate\angular-animate.min.js" />
+    <Content Include="bower_components\angular-animate\angular-animate.min.js.map" />
+    <Content Include="bower_components\angular-aria\angular-aria.js" />
+    <Content Include="bower_components\angular-aria\angular-aria.min.js" />
+    <Content Include="bower_components\angular-aria\angular-aria.min.js.map" />
+    <Content Include="bower_components\angular-material\angular-material.css" />
+    <Content Include="bower_components\angular-material\angular-material.js" />
+    <Content Include="bower_components\angular-material\angular-material.layouts.css" />
+    <Content Include="bower_components\angular-material\angular-material.layouts.min.css" />
+    <Content Include="bower_components\angular-material\angular-material.min.css" />
+    <Content Include="bower_components\angular-material\angular-material.min.js" />
+    <Content Include="bower_components\angular-material\angular-material.scss" />
+    <Content Include="bower_components\angular-messages\angular-messages.js" />
+    <Content Include="bower_components\angular-messages\angular-messages.min.js" />
+    <Content Include="bower_components\angular-messages\angular-messages.min.js.map" />
+    <Content Include="bower_components\angular-resource\angular-resource.js" />
+    <Content Include="bower_components\angular-resource\angular-resource.min.js" />
+    <Content Include="bower_components\angular-resource\angular-resource.min.js.map" />
+    <Content Include="bower_components\angular-route\angular-route.js" />
+    <Content Include="bower_components\angular-route\angular-route.min.js" />
+    <Content Include="bower_components\angular-route\angular-route.min.js.map" />
+    <Content Include="bower_components\angular\angular-csp.css" />
+    <Content Include="bower_components\angular\angular.js" />
+    <Content Include="bower_components\angular\angular.min.js" />
+    <Content Include="Content\css.css">
+      <DependentUpon>css.css.bundle</DependentUpon>
+    </Content>
+    <Content Include="Content\css.min.css">
+      <DependentUpon>css.css</DependentUpon>
+    </Content>
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="app\css\Site.css" />
@@ -274,6 +393,9 @@
     <Content Include="Init.ps1" />
     <Content Include="app\js\gym.directives.js" />
     <Content Include="app\js\tools.js" />
+    <Content Include="KeepAlive.aspx" />
+    <Content Include="Scripts\ai.0.22.8-build00154.js" />
+    <Content Include="Scripts\ai.0.22.8-build00154.min.js" />
     <Content Include="test\unit\karma.conf.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config">
@@ -329,9 +451,102 @@
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="ApplicationInsights.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="bower_components\angular\angular.min.js.gzip" />
+    <Content Include="bower_components\angular\angular.min.js.map" />
+    <Content Include="app\js\gym.directives.min.js.map">
+      <DependentUpon>gym.directives.min.js</DependentUpon>
+    </Content>
+    <Content Include="app\js\gym.directives.min.js.gzip">
+      <DependentUpon>gym.directives.min.js</DependentUpon>
+    </Content>
+    <Content Include="app\js\gym.min.js.map">
+      <DependentUpon>gym.min.js</DependentUpon>
+    </Content>
+    <Content Include="app\js\gym.min.js.gzip">
+      <DependentUpon>gym.min.js</DependentUpon>
+    </Content>
+    <Content Include="app\js\gym.services.min.js.map">
+      <DependentUpon>gym.services.min.js</DependentUpon>
+    </Content>
+    <Content Include="app\js\gym.services.min.js.gzip">
+      <DependentUpon>gym.services.min.js</DependentUpon>
+    </Content>
+    <Content Include="app\js\gym.workout-edit-controller.min.js.map">
+      <DependentUpon>gym.workout-edit-controller.min.js</DependentUpon>
+    </Content>
+    <Content Include="app\js\gym.workout-edit-controller.min.js.gzip">
+      <DependentUpon>gym.workout-edit-controller.min.js</DependentUpon>
+    </Content>
+    <Content Include="app\js\gym.workout-list-controller.min.js.map">
+      <DependentUpon>gym.workout-list-controller.min.js</DependentUpon>
+    </Content>
+    <Content Include="app\js\gym.workout-list-controller.min.js.gzip">
+      <DependentUpon>gym.workout-list-controller.min.js</DependentUpon>
+    </Content>
+    <Content Include="app\js\gym.workout-new-controller.min.js.map">
+      <DependentUpon>gym.workout-new-controller.min.js</DependentUpon>
+    </Content>
+    <Content Include="app\js\gym.workout-new-controller.min.js.gzip">
+      <DependentUpon>gym.workout-new-controller.min.js</DependentUpon>
+    </Content>
+    <Content Include="app\js\gym.workout-session-controller.min.js.map">
+      <DependentUpon>gym.workout-session-controller.min.js</DependentUpon>
+    </Content>
+    <Content Include="app\js\gym.workout-session-controller.min.js.gzip">
+      <DependentUpon>gym.workout-session-controller.min.js</DependentUpon>
+    </Content>
+    <Content Include="app\js\tools.min.js.map">
+      <DependentUpon>tools.min.js</DependentUpon>
+    </Content>
+    <Content Include="app\js\tools.min.js.gzip">
+      <DependentUpon>tools.min.js</DependentUpon>
+    </Content>
+    <Content Include="Content\css.css.bundle" />
+    <Content Include="Content\css.min.css.gzip">
+      <DependentUpon>css.min.css</DependentUpon>
+    </Content>
+    <Content Include="app\css\animations.min.css.gzip">
+      <DependentUpon>animations.min.css</DependentUpon>
+    </Content>
+    <Content Include="app\css\Site.min.css.gzip">
+      <DependentUpon>Site.min.css</DependentUpon>
+    </Content>
+    <None Include="Properties\PublishProfiles\GymApp - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\GymApp - Web Deploy.pubxml" />
+    <None Include="Web.Prod.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>favicon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Prod|AnyCPU'">
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <PublishDatabaseSettings>
+      <Objects>
+        <ObjectGroup Name="MainDataModel-Deployment" Order="1">
+          <Destination Path="Data Source=tcp:ches151.database.windows.net,1433%3bInitial Catalog=GymApp%3bUser ID=ches%40ches151%3bPassword=Q!w2e3r4t5%3bConnect Timeout=30%3bEncrypt=True%3bTrustServerCertificate=False" />
+          <Object Type="DbFullSql">
+            <PreSource Path="Data Source=.\SQLEXPRESS%3bInitial Catalog=GymApp%3bIntegrated Security=True%3bApplication Name=EntityFramework%3bUser Instance=True" ScriptSchema="True" ScriptData="False" CopyAllFullTextCatalogs="False" DriDefaults="True" />
+            <Source Path="obj\Prod\AutoScripts\MainDataModel-Deployment_SchemaOnly.sql" Transacted="True" />
+          </Object>
+        </ObjectGroup>
+      </Objects>
+    </PublishDatabaseSettings>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
@@ -343,15 +558,14 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>51227</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://192.168.100.2:88</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
-          <UseCustomServer>False</UseCustomServer>
-          <CustomServerUrl>
-          </CustomServerUrl>
+          <UseCustomServer>True</UseCustomServer>
+          <CustomServerUrl>http://gymapp.azurewebsites.net/</CustomServerUrl>
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>

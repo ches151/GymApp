@@ -1,0 +1,298 @@
+﻿.view-container {
+  position: relative;
+}
+
+.view-frame.ng-enter, .view-frame.ng-leave {
+  background: white;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.view-frame.ng-enter {
+  -webkit-animation: 0.25s fade-in;
+  -moz-animation: 0.25s fade-in;
+  -o-animation: 0.25s fade-in;
+  animation: 0.25s fade-in;
+  z-index: 100;
+}
+
+.view-frame.ng-leave {
+  -webkit-animation: 0.25s fade-out;
+  -moz-animation: 0.25s fade-out;
+  -o-animation: 0.25s fade-out;
+  animation: 0.25s fade-out;
+  z-index:99;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@-moz-keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@-webkit-keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+@-moz-keyframes fade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+@-webkit-keyframes fade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+html, body {
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+
+/* Toolbar area */
+
+.menu {
+    background-color: transparent;
+    border: none;
+    height: 38px;
+    margin: 16px;
+    width: 36px;
+}
+
+md-toolbar h1 {
+    margin: auto;
+}
+
+/* Sidenav area */
+
+md-list .md-button {
+    color: inherit;
+    font-weight: 500;
+    text-align: left;
+    width: 100%;
+}
+md-list .md-button.selected {
+    color: #03a9f4;
+}
+
+md-sidenav md-list {
+    padding: 0px 0px 8px 0px;
+}
+
+
+/* Primary content area */
+
+#content {
+    overflow: hidden;
+}
+
+#content {
+    /*padding-left: 40px;
+      padding-right: 40px;*/
+    padding-top: 5px;
+}
+
+#content .md-button.contact {
+    background-color: transparent;
+    border: none;
+    width: 48px;
+    height: 48px;
+    margin: 8px auto 16px 0;
+    position: absolute;
+    top: 10px;
+    right: 40px;
+}
+
+#content md-icon.avatar {
+    margin-top: 10px;
+}
+
+#content .md-button.contact > md-icon {
+    fill: black;
+    width: 36px;
+    height: 36px;
+}
+
+md-button.menuBtn > md-icon {
+    fill: white;
+    width: 24px;
+    height: 24px;
+}
+
+#content .md-button.contact:active > md-icon {
+    background-color: #dadada;
+    border-radius: 75%;
+    padding: 4px;
+    transition: all 100ms ease-out 30ms;
+}
+
+#content img {
+    display: block;
+    height: auto;
+    max-width: 500px;
+}
+
+/* Utils */
+
+.content-wrapper {
+    position: relative;
+}
+
+/* Typography support coming in 0.8.0 */
+
+md-toolbar h1 {
+    font-size: 1.250em;
+    font-weight: 400;
+}
+
+.avatar {
+    position: relative;
+    width: 128px;
+    height: 128px;
+    border: 1px solid #ddd;
+    border-radius: 50%;
+    display: inline-block;
+    overflow: hidden;
+    margin: 0px;
+    vertical-align: middle;
+    zoom:0.70;
+    transform: translateZ(0);
+    -webkit-transform: scale(0.70);
+    -moz-transform: scale(0.70);
+}
+
+
+md-bottom-sheet md-icon {
+    margin-right: 20px;
+}
+
+span.name {
+    font-weight: bold;
+    font-size: 1.1em;
+    padding-left: 5px;
+}
+
+/**
+* Hide when Angular is not yet loaded and initialized
+*/
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+    display: none !important;
+}
+
+.md-button.md-fab .material-icons {
+    line-height: 56px;
+}
+
+.md-button.md-fab.md-mini .material-icons {
+    line-height: 40px;
+}
+.md-button.md-fab.g-start-workout .material-icons {
+    padding-left: 3px;
+}
+.md-button.md-fab.g-right-bottom-button {
+    position: fixed;
+    bottom: 12px;
+    right: 12px;/* remove this background-color assignment and customize the theme properly instead*/
+    background-color: #0288D1;
+    z-index: 21;
+}
+.md-button.md-fab.g-right-bottom-button:not([disabled]):hover {
+    background-color: #0288D1;
+}
+
+.material-icons.md-18 {
+    font-size: 18px;
+}
+
+.material-icons.md-24 {
+    font-size: 24px;
+}
+
+.material-icons.md-36 {
+    font-size: 36px;
+}
+
+.material-icons.md-48 {
+    font-size: 48px;
+}
+
+.material-icons.md-dark {
+    color: rgba(0, 0, 0, 0.54);
+}
+
+.material-icons.md-dark.md-inactive {
+    color: rgba(0, 0, 0, 0.26);
+}
+
+.material-icons.md-light {
+    color: rgba(255, 255, 255, 1);
+}
+
+.material-icons.md-light.md-inactive {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.material-icons.black {
+    color: black;
+}
+
+md-input-container {
+    margin: 0;
+    vertical-align: top;
+}
+
+.md-headline {
+    margin-bottom: .5em;
+}
+.md-headline.md-input-has-placeholder {
+    margin-bottom: 0;
+}
+.md-subhead .g-exercise:first-child {
+    margin-top: 1em;
+}
+
+.md-autocomplete-suggestions-container li span .highlight {
+    background: yellow;
+    color:  inherit;
+}
+.g-newcard-helper .g-exercise {
+    clear: both;
+}
+.g-newcard-helper .g-exercise button {
+    float: left;
+}
+.g-newcard-helper .g-exercise .g-exercise-name {
+    float: left;
+    margin-top: 0.65em;
+}
+md-card.g-newcard-helper md-card-title md-card-title-text:only-child .md-subhead {
+    padding-top: 0;    
+}
+#workoutName+.md-errors-spacer {
+    display: none;
+}
+md-card.g-workout:last-child {
+    margin-bottom: calc(56px + 12px + 4px);
+}
+.md-toolbar-tools [g-current-time] {
+    text-align: center;
+}
+.g-input-unit {
+    width: 22%;
+}
+.g-input-weight {
+    width: 33%;
+}
+.g-input-reps {
+    width: 33%;
+}

@@ -1,4 +1,4 @@
-namespace Notes.Migrations
+namespace GymWebApp.Migrations
 {
     using System;
     using System.Data.Entity.Migrations;
