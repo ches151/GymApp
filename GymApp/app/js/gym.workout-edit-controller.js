@@ -1,21 +1,20 @@
 (function () {
-    "use strict";
-    angular.module("gym")
-        .controller("WorkoutEditCtrl", WorkoutEditCtrl);
+    'use strict';
+    angular.module('gym')
+        .controller('WorkoutEditCtrl', WorkoutEditCtrl);
 
-    WorkoutEditCtrl.$inject = ["$timeout", "$log", "$window", "$scope", "$mdConstant", "$routeParams", "tools", "workoutsService", "domFactory", "header"];
-    function WorkoutEditCtrl($timeout, $log, $window, $scope, $mdConstant, $routeParams, tools, workoutsService, domFactory, header) {
-        $log.log("gym.WorkoutEditCtrl constructor");
+    WorkoutEditCtrl.$inject = ['$timeout', '$log', '$window', '$scope', '$mdConstant', '$routeParams', 'tools', 'workoutsService', 'exercisesService', 'domFactory', 'header'];
+    function WorkoutEditCtrl($timeout, $log, $window, $scope, $mdConstant, $routeParams, tools, workoutsService, exercisesService, domFactory, header) {
+        $log.log('gym.WorkoutEditCtrl constructor');
         
         header.canGoBack = true;
         
         var self = this;
         self.exercises = [];
-        self.searchText = "";
+        self.searchText = '';
         self.workoutId = $routeParams.workoutId;
 
         self.querySearch = querySearch;
-        self.keydown = keydown;
         //self.deleteExercise = deleteExercise;
         self.transformChip = transformChip;
         self.saveWorkout = saveWorkout;
@@ -25,14 +24,12 @@
         };
 
         workoutsService
-            .getExercises()
-            .success(function getExercisesCallback(data) {
+            .get(function (data) {
                 self.exercises = data.value;
             });
 
         workoutsService
-            .getWorkoutById(self.workoutId)
-            .success(function getWorkoutByIdCallback(data) {
+            .query({ id: self.workoutId }, function (data) {
                 setWorkout(data);
             });
             
@@ -43,8 +40,8 @@
 
         function querySearch(query) {
             var results = query
-            ? self.exercises.filter(createFilterFor(query))
-            : self.exercises;
+                ? self.exercises.filter(createFilterFor(query))
+                : self.exercises;
             return results;
         }
         /**
@@ -75,42 +72,37 @@
 
         function saveWorkout() {
             redirectToListOfWorkouts();
-            throw "Not implemented";
+            throw "Not Implemented";
+            if (canSave(self.workout)) {
+                setWorkoutNameIfEmpty(self.workout);
+
+                workoutsService
+                    .update({ id: self.workout.id }, self.workout, function () {
+                        redirectToListOfWorkouts();
+                        // TODO Scroll created workout into view
+                    });
+            }
+            else {
+                // TODO: show a toast message 'workout was not saved'
+                redirectToListOfWorkouts();
+            }
         }
 
         function redirectToListOfWorkouts() {
-            $scope.go("workout-list");
+            $scope.go('workout-list');
         }
 
-        function keydown(event) {
-            console.log("keydown");
-            switch (event.keyCode) {
-                case $mdConstant.KEY_CODE.ENTER:
-                    $log.log("Create edit " + self.searchText);
-                    var w = self.workout;
-                    if (w) {
-                        if (!w.exercises) {
-                            w.exercises = [];
-                        }
-                        var name = self.searchText;
-                        var noSuchExerciseYet =
-                        w.exercises.every(function (element) {
-                            return element.name !== name;
-                        });
-                        if (noSuchExerciseYet) {
-                            var editExercise = {
-                                id: tools.guid(),
-                                name: name
-                            };
-                            self.exercises.push(editExercise);
-                            w.exercises.push(editExercise);
-                            $log.log(w);
-                        }
-                        self.searchText = "";
-                    }
-                    break;
-                default:
+        function setWorkoutNameIfEmpty(workout) {
+            if (typeof workout.name === 'undefined' || workout.name === '') {
+                workout.name = 'Workout ' + (new Date())
+                    .toISOString()
+                    .replace('T', ' ')
+                    .replace(/\.\d+Z$/i, '');
             }
+        }
+
+        function canSave(workout) {
+            return (workout.name !== '' || (typeof workout.exercises !== 'undefined' && workout.exercises.length > 0));
         }
     }
 })();

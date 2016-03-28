@@ -15,10 +15,9 @@
         self.deleteWorkout = deleteWorkout;
 
         workoutsService
-            .getWorkouts()
-            .success(function getWorkoutsCallback(data) {
-                    self.workouts = data.value;
-                });
+            .get(function(data) {
+                self.workouts = data.value;
+            });
 
         function deleteWorkout(workout) {
             // TODO add toast UNDO message
@@ -28,7 +27,7 @@
                     break;
                 }
             }
-            workoutsService.deleteWorkoutById(workout.id);
+            workoutsService.remove({ id: workout.id });
         }
     }
 

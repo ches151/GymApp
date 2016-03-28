@@ -31,8 +31,7 @@
 
 
         workoutsService
-            .getWorkoutById(self.workoutId)
-            .success(onWorkoutObtained);
+            .query({ id: self.workoutId }, onWorkoutObtained);
         
         function onWorkoutObtained(workout) {
             setWorkout(workout);
@@ -182,7 +181,7 @@
         function deleteExerciseSet(exerciseIndex, set) {
             var setId = set.id;
             if (setId) {
-                exerciseSetsService.remove(setId);
+                exerciseSetsService.remove({ id: setId });
             }
 
             var currentExerciseSets = self.exerciseSets[exerciseIndex];

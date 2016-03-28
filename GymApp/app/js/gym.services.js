@@ -75,44 +75,46 @@
             }];
     }]);
 
-    app.factory('workoutsService', ['$http', '$log', 'settings',
-    function workoutsService($http, $log, settings) {
+    app.factory('workoutsService', ['$resource', '$log', 'settings',
+    function workoutsService($resource, $log, settings) {
         $log.log('gym.services.workoutsService singleton');
 
+        function getExercises() {
+            return $http.get(getFullUrl('odata/Exercises'));
+        }
+        
         var rootUrl = settings.rootUrl || '/';
+        var odataUrl = getFullUrl('odata/Workouts');
+
+        return $resource('', {},
+        {
+            get: { method: 'GET', url: odataUrl + '?$expand=exercises($orderby=dateCreated)' },
+            save: { method: 'POST', url: odataUrl + '?$expand=exercises($orderby=dateCreated)' },
+            update: { method: 'PATCH', params: { id: '@id' }, url: odataUrl + '(:id)' },
+            query: { method: 'GET', params: { id: '@id' }, url: odataUrl + '(:id)?$expand=exercises($orderby=dateCreated)'},
+            remove: { method: 'DELETE', params: { id: '@id' }, url: odataUrl + '(:id)' }
+        });
 
         function getFullUrl(url) {
             return rootUrl.length > 1
                 ? rootUrl + '/' + url
                 : rootUrl + url;
         }
+    }]);
 
-        function getWorkouts() {
-            return $http.get(getFullUrl('odata/Workouts?$expand=exercises'));
-        }
-        function getExercises() {
-            return $http.get(getFullUrl('odata/Exercises'));
-        }
+    app.factory('exercisesService', ['$resource', '$log', 'settings',
+    function workoutsSexercisesServiceervice($resource, $log, settings) {
+        $log.log('gym.services.exercisesService singleton');
 
-        function deleteWorkoutById(workoutId) {
-            return $http.delete(getFullUrl('odata/Workouts(' + workoutId + ')'));
-        }
+        var rootUrl = settings.rootUrl || '/';
 
-        function getWorkoutById(workoutId) {
-            return $http.get(getFullUrl('odata/Workouts(' + workoutId + ')?$expand=exercises'));
-        }
+        return $resource(getFullUrl('odata/Exercises'));
 
-        function addWorkout(newWorkout) {
-            return $http.post(getFullUrl('odata/Workouts?$expand=exercises'), newWorkout);
+        function getFullUrl(url) {
+            return rootUrl.length > 1
+                ? rootUrl + '/' + url
+                : rootUrl + url;
         }
-
-        return {
-            getWorkouts: getWorkouts,
-            getExercises: getExercises,
-            addWorkout: addWorkout,
-            getWorkoutById: getWorkoutById,
-            deleteWorkoutById: deleteWorkoutById
-        };
     }]);
 
     app.factory('exerciseSetsService', ['$resource', '$log', 'settings',
@@ -122,28 +124,28 @@
         var rootUrl = settings.rootUrl || '/';
         var odataUrl = getFullUrl('odata/ExerciseSets');
 
-        return $resource("", {},
+        return $resource('', {},
         {
-            get: { method: "GET", url: odataUrl },
-            save: { method: "POST", url: odataUrl },
-            update: { method: 'PUT', params: { id: "@id" }, url: odataUrl + "(:id)" },
-            query: { method: 'GET', params: { id: "@id" }, url: odataUrl + "(:id)" },
-            remove: { method: 'DELETE', params: { id: "@id" }, url: odataUrl + "(:id)" },
+            get: { method: 'GET', url: odataUrl },
+            save: { method: 'POST', url: odataUrl },
+            update: { method: 'PUT', params: { id: '@id' }, url: odataUrl + '(:id)' },
+            query: { method: 'GET', params: { id: '@id' }, url: odataUrl + '(:id)' },
+            remove: { method: 'DELETE', params: { id: '@id' }, url: odataUrl + '(:id)' },
             getPrevExerciseSessionId: {
                 method: 'GET',
                 params: {
-                    exerciseId: "@exerciseId",
-                    workoutSessionId: "@workoutSessionId"
+                    exerciseId: '@exerciseId',
+                    workoutSessionId: '@workoutSessionId'
                 },
-                url: odataUrl + "?$select=workoutSessionId&$filter=(exerciseId eq :exerciseId and workoutSessionId ne :workoutSessionId and weight gt 0)&$orderby=date desc&$top=1"
+                url: odataUrl + '?$select=workoutSessionId&$filter=(exerciseId eq :exerciseId and workoutSessionId ne :workoutSessionId and weight gt 0)&$orderby=date desc&$top=1'
             },
             getExercisesSetsFromSession: {
                 method: 'GET',
                 params: {
-                    exerciseId: "@exerciseId",
-                    workoutSessionId: "@workoutSessionId"
+                    exerciseId: '@exerciseId',
+                    workoutSessionId: '@workoutSessionId'
                 },
-                url: odataUrl + "?$filter=(exerciseId eq :exerciseId and workoutSessionId eq :workoutSessionId)&$orderby=serialNumber"
+                url: odataUrl + '?$filter=(exerciseId eq :exerciseId and workoutSessionId eq :workoutSessionId)&$orderby=serialNumber'
             }
         });
 

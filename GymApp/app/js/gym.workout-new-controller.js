@@ -1,18 +1,18 @@
 (function () {
-    "use strict";
-    angular.module("gym")
-        .controller("WorkoutNewCtrl", WorkoutNewCtrl);
+    'use strict';
+    angular.module('gym')
+        .controller('WorkoutNewCtrl', WorkoutNewCtrl);
 
-    WorkoutNewCtrl.$inject = ["$timeout", "$log", "$window", "$scope", "$mdConstant", "tools", "workoutsService", "domFactory", "header"];
-    function WorkoutNewCtrl($timeout, $log, $window, $scope, $mdConstant, tools, workoutsService, domFactory, header) {
-        $log.log("gym.WorkoutNewCtrl constructor");
+    WorkoutNewCtrl.$inject = ['$timeout', '$log', '$window', '$scope', '$mdConstant', 'tools', 'workoutsService', 'exercisesService', 'domFactory', 'header'];
+    function WorkoutNewCtrl($timeout, $log, $window, $scope, $mdConstant, tools, workoutsService, exercisesService, domFactory, header) {
+        $log.log('gym.WorkoutNewCtrl constructor');
         
-        header.title = "New workout";        
+        header.title = 'New workout';        
         header.canGoBack = true;
 
         var self = this;
         self.exercises = [];
-        self.searchText = "";
+        self.searchText = '';
         self.selectedItem = null;
 
         self.querySearch = querySearch;
@@ -23,19 +23,18 @@
             exercises: []
         };
 
-        workoutsService
-            .getExercises()
-            .success(function getExercisesCallback(data) {
-                if (typeof data === "undefined" || typeof data.value === "undefined") {
-                    $log.error("No exercises");
+        exercisesService
+            .get(function (data) {
+                if (typeof data === 'undefined' || typeof data.value === 'undefined') {
+                    $log.error('No exercises');
                 }
                 self.exercises = data.value;
             });
 
         function querySearch(query) {
             var results = query
-            ? self.exercises.filter(createFilterFor(query))
-            : self.exercises;
+                ? self.exercises.filter(createFilterFor(query))
+                : self.exercises;
             return results;
         }
         /**
@@ -65,40 +64,38 @@
         }
 
         function saveWorkout() {
-            if (canSave()) {
+            if (canSave($scope.newWorkout)) {
                 var newWorkoutId = tools.guid();
                 $scope.newWorkout.id = newWorkoutId;
                 setWorkoutNameIfEmpty($scope.newWorkout);
                 
                 workoutsService
-                    .addWorkout($scope.newWorkout)
-                    .success(function () {
+                    .save($scope.newWorkout, function () {
                         redirectToListOfWorkouts();
                         // TODO Scroll created workout into view
                     });
             }
             else {
-                // TODO: show a toast message "workout was not saved"
+                // TODO: show a toast message 'workout was not saved'
                 redirectToListOfWorkouts();
             }
         }
 
         function redirectToListOfWorkouts() {
-            $scope.go("workout-list");
+            $scope.go('workout-list');
         }
         
         function setWorkoutNameIfEmpty(workout) {
-            if (typeof workout.name === "undefined" || workout.name === "") {
-                workout.name = "Workout "+(new Date())
+            if (typeof workout.name === 'undefined' || workout.name === '') {
+                workout.name = 'Workout '+(new Date())
                     .toISOString()
-                    .replace("T"," ")
-                    .replace(/\.\d+Z$/i, "");
+                    .replace('T',' ')
+                    .replace(/\.\d+Z$/i, '');
             }
         }
         
-        function canSave() {
-            var workout = $scope.newWorkout;
-            return (workout.name !== "" || (typeof workout.exercises !== "undefined" && workout.exercises.length > 0));
+        function canSave(workout) {
+            return (workout.name !== '' || (typeof workout.exercises !== 'undefined' && workout.exercises.length > 0));
         }
     }
 })();
