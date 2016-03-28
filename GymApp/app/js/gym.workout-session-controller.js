@@ -207,7 +207,10 @@
             return !set.weight && !set.numberOfRepetitions;
         }
     }
+    angular.module('gym')
+        .controller('ExerciseSetOneExerciseCtrl', ExerciseSetOneExerciseCtrl);
 
+    ExerciseSetOneExerciseCtrl.$inject = ['$mdDialog', 'exerciseName', 'exerciseSets'];
     function ExerciseSetOneExerciseCtrl($mdDialog, exerciseName, exerciseSets) {
         var self = this;
         self.exerciseName = exerciseName;

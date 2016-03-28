@@ -11,7 +11,7 @@
             .primaryPalette('blue-grey')
             .accentPalette('pink');
 
-        $locationProvider.html5Mode(true);
+        //$locationProvider.html5Mode(true);
 
         $routeProvider
           .when('/', {
@@ -43,9 +43,9 @@
               redirectTo: '/'
           });
     }])
-    .run(function ($log) {
+    .run(['$log',function ($log) {
         $log.log('gym.run');
-    });
+    }]);
 })();
 (function () {
     'use strict';
