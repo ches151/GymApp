@@ -2,7 +2,7 @@
 using System.Web.Http;
 using System.Web.Optimization;
 
-namespace Notes
+namespace GymWebApp
 {
     public class BundleConfig
     {
