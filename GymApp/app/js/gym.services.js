@@ -78,10 +78,6 @@
     app.factory('workoutsService', ['$resource', '$log', 'settings',
     function workoutsService($resource, $log, settings) {
         $log.log('gym.services.workoutsService singleton');
-
-        function getExercises() {
-            return $http.get(getFullUrl('odata/Exercises'));
-        }
         
         var rootUrl = settings.rootUrl || '/';
         var odataUrl = getFullUrl('odata/Workouts');
