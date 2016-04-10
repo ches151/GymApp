@@ -3,7 +3,7 @@
         <div ng-repeat="ex in ctrl.exercises track by $index">
             <md-list-item class="md-2-line" ng-hide="ex.id == ctrl.activeExercise.id" ng-click="ctrl.setActiveExercise(ex)">
                 <div class="md-list-item-text">
-                    <h3>{{ex.name}}</h3>
+                    <h3><i class="material-icons g-accomplished" ng-show="ctrl.isExerciseAccomplished($index)">check_circle</i>{{ex.name}}</h3>
                 </div>
                 <md-divider ng-if="!$last"></md-divider>
             </md-list-item>

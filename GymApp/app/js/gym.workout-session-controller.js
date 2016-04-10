@@ -27,6 +27,7 @@
         self.onKeydown = onKeydown;
         self.onBlur = onBlur;
 
+        self.isExerciseAccomplished = isExerciseAccomplished;
         $scope.$on('$destroy', onDestroy);
 
 
@@ -84,6 +85,10 @@
 
         function setActiveExercise(exercise) {
             self.activeExercise = exercise;
+        }
+        function isExerciseAccomplished(exerciseIndex) {
+            var currentExerciseSets = self.exerciseSets[exerciseIndex];
+            return currentExerciseSets.length > 1 || (currentExerciseSets.length == 1 && isSetFilled(currentExerciseSets[0]));                
         }
 
         function showHistory(ev, exercise) {

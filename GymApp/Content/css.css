@@ -296,3 +296,8 @@ md-card.g-workout:last-child {
 .g-input-reps {
     width: 33%;
 }
+.g-accomplished {
+    vertical-align: bottom;
+    padding: 0 2pt 0 0;
+    color: #26A69A;
+}
