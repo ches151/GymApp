@@ -417,8 +417,8 @@
     <Content Include="Content\icons\favicon\favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="app\css\Site.css" />
-    <Content Include="Gruntfile.js" />
-    <Content Include="gulpfile.js" />
+    <None Include="gruntfile.js" />
+    <None Include="gulpfile.js" />
     <Content Include="index.html" />
     <Content Include="bower.json" />
     <Content Include="Init.ps1" />
