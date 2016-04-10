@@ -379,15 +379,46 @@
     <Content Include="bower_components\angular\angular-csp.css" />
     <Content Include="bower_components\angular\angular.js" />
     <Content Include="bower_components\angular\angular.min.js" />
+    <Content Include="Content\icons\favicon\browserconfig.xml" />
     <Content Include="Content\css.css">
       <DependentUpon>css.css.bundle</DependentUpon>
     </Content>
     <Content Include="Content\css.min.css">
       <DependentUpon>css.css</DependentUpon>
     </Content>
-    <Content Include="favicon.ico" />
+    <Content Include="Content\icons\favicon\android-chrome-144x144.png" />
+    <Content Include="Content\icons\favicon\android-chrome-192x192.png" />
+    <Content Include="Content\icons\favicon\android-chrome-36x36.png" />
+    <Content Include="Content\icons\favicon\android-chrome-48x48.png" />
+    <Content Include="Content\icons\favicon\android-chrome-72x72.png" />
+    <Content Include="Content\icons\favicon\android-chrome-96x96.png" />
+    <Content Include="Content\icons\favicon\apple-touch-icon-114x114.png" />
+    <Content Include="Content\icons\favicon\apple-touch-icon-120x120.png" />
+    <Content Include="Content\icons\favicon\apple-touch-icon-144x144.png" />
+    <Content Include="Content\icons\favicon\apple-touch-icon-152x152.png" />
+    <Content Include="Content\icons\favicon\apple-touch-icon-180x180.png" />
+    <Content Include="Content\icons\favicon\apple-touch-icon-57x57.png" />
+    <Content Include="Content\icons\favicon\apple-touch-icon-60x60.png" />
+    <Content Include="Content\icons\favicon\apple-touch-icon-72x72.png" />
+    <Content Include="Content\icons\favicon\apple-touch-icon-76x76.png" />
+    <Content Include="Content\icons\favicon\apple-touch-icon-precomposed.png" />
+    <Content Include="Content\icons\favicon\apple-touch-icon.png" />
+    <Content Include="Content\icons\favicon\favicon-16x16.png" />
+    <Content Include="Content\icons\favicon\favicon-194x194.png" />
+    <Content Include="Content\icons\favicon\favicon-32x32.png" />
+    <Content Include="Content\icons\favicon\favicon-96x96.png" />
+    <Content Include="Content\icons\favicon\ic_fitness_center_black_48px.svg" />
+    <Content Include="Content\icons\favicon\mstile-144x144.png" />
+    <Content Include="Content\icons\favicon\mstile-150x150.png" />
+    <Content Include="Content\icons\favicon\mstile-310x150.png" />
+    <Content Include="Content\icons\favicon\mstile-310x310.png" />
+    <Content Include="Content\icons\favicon\mstile-70x70.png" />
+    <Content Include="Content\icons\favicon\safari-pinned-tab.svg" />
+    <Content Include="Content\icons\favicon\favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="app\css\Site.css" />
+    <Content Include="Gruntfile.js" />
+    <Content Include="gulpfile.js" />
     <Content Include="index.html" />
     <Content Include="bower.json" />
     <Content Include="Init.ps1" />
@@ -521,6 +552,7 @@
     </Content>
     <Content Include=".deployment" />
     <Content Include="deploy.cmd" />
+    <Content Include="Content\icons\favicon\manifest.json" />
     <None Include="Properties\PublishProfiles\GymApp - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\GymApp - Web Deploy.pubxml" />
   </ItemGroup>
@@ -529,7 +561,7 @@
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>favicon.ico</ApplicationIcon>
+    <ApplicationIcon>Content\icons\favicon\favicon.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Prod|AnyCPU'">
     <OutputPath>bin\</OutputPath>
