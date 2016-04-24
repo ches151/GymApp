@@ -217,3 +217,8 @@ bower_components/
 .idea
 *.mdf
 *.ldf
+*.min.js
+*.min.js.gzip
+*.min.js.map
+*.min.css
+*.min.css.gzip

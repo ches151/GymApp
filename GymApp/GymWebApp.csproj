@@ -40,6 +40,13 @@
     <WarningLevel>4</WarningLevel>
     <PublishDatabaseSettings>
       <Objects>
+        <ObjectGroup Name="MainDataModel-Deployment" Order="1" xmlns="">
+          <Destination Path="Data Source=.\prod%3bInitial Catalog=GymApp%3bPersist Security Info=True%3bUser ID=sa%3bPassword=Qwerty1%3bApplication Name=EntityFramework" />
+          <Object Type="DbFullSql">
+            <PreSource Path="Data Source=%28LocalDB%29\MSSQLLocalDB%3bAttachDbFilename=|DataDirectory|\Database1.mdf%3bIntegrated Security=True" ScriptSchema="True" ScriptData="False" CopyAllFullTextCatalogs="False" DriDefaults="True" />
+            <Source Path="obj\Debug\AutoScripts\MainDataModel-Deployment_SchemaOnly.sql" Transacted="True" />
+          </Object>
+        </ObjectGroup>
       </Objects>
     </PublishDatabaseSettings>
   </PropertyGroup>
@@ -420,8 +427,8 @@
     <None Include="gruntfile.js" />
     <None Include="gulpfile.js" />
     <Content Include="index.html" />
-    <Content Include="bower.json" />
-    <Content Include="Init.ps1" />
+    <None Include="bower.json" />
+    <None Include="Init.ps1" />
     <Content Include="app\js\gym.directives.js" />
     <Content Include="app\js\tools.js" />
     <Content Include="KeepAlive.aspx" />
@@ -468,15 +475,16 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Default\Index.cshtml" />
+    <None Include="Properties\PublishProfiles\gymapp.dynu.net.pubxml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="packages.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="test\e2e\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="package.json" />
+    <None Include="package.json" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201603112127257_Initial.resx">
@@ -553,8 +561,6 @@
     <Content Include=".deployment" />
     <Content Include="deploy.cmd" />
     <Content Include="Content\icons\favicon\manifest.json" />
-    <None Include="Properties\PublishProfiles\GymApp - FTP.pubxml" />
-    <None Include="Properties\PublishProfiles\GymApp - Web Deploy.pubxml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
