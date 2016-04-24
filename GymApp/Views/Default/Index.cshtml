@@ -1,4 +1,19 @@
-﻿<!DOCTYPE html><html lang="en" ng-app="gym"><head>    <meta charset="utf-8">    <meta http-equiv="X-UA-Compatible" content="IE=edge">    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">    <title>Gym Application</title>    <base href="@ViewBag.AppUrl">    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic">    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">    <link rel="mask-icon" href="/Content/icons/favicon/safari-pinned-tab.svg?v=eEEro2gwd9" color="#5bbad5">@Styles.Render("~/Content/angular-material", "~/Content/css")<link rel="apple-touch-icon" sizes="57x57" href="/Content/icons/favicon/apple-touch-icon-57x57.png?v=eEEro2gwd9">
+﻿<!DOCTYPE html>
+<html lang="en" ng-app="gym">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+    <title>Gym Application</title>
+    <base href="@ViewBag.AppUrl">
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:400,500,700,400italic">
+    <link href="//fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="mask-icon" href="/Content/icons/favicon/safari-pinned-tab.svg?v=eEEro2gwd9" color="#5bbad5">
+@Styles.Render(
+"~/Content/angular-material"
+, "~/Content/css"
+)
+<link rel="apple-touch-icon" sizes="57x57" href="/Content/icons/favicon/apple-touch-icon-57x57.png?v=eEEro2gwd9">
 <link rel="apple-touch-icon" sizes="60x60" href="/Content/icons/favicon/apple-touch-icon-60x60.png?v=eEEro2gwd9">
 <link rel="apple-touch-icon" sizes="72x72" href="/Content/icons/favicon/apple-touch-icon-72x72.png?v=eEEro2gwd9">
 <link rel="apple-touch-icon" sizes="76x76" href="/Content/icons/favicon/apple-touch-icon-76x76.png?v=eEEro2gwd9">
@@ -12,10 +27,49 @@
 <link rel="icon" type="image/png" href="/Content/icons/favicon/favicon-96x96.png?v=eEEro2gwd9" sizes="96x96">
 <link rel="icon" type="image/png" href="/Content/icons/favicon/android-chrome-192x192.png?v=eEEro2gwd9" sizes="192x192">
 <link rel="icon" type="image/png" href="/Content/icons/favicon/favicon-16x16.png?v=eEEro2gwd9" sizes="16x16">
-<link rel="manifest" href="/Content/icons/favicon/manifest.json?v=eEEro2gwd9">
+<link rel="manifest" href="manifest.json?v=eEEro2gwd9">
 <link rel="mask-icon" href="/Content/icons/favicon/safari-pinned-tab.svg?v=eEEro2gwd9" color="#5bbad5">
 <link rel="shortcut icon" href="/Content/icons/favicon/favicon.ico?v=eEEro2gwd9">
 <meta name="msapplication-TileColor" content="#26a69a">
 <meta name="msapplication-TileImage" content="/Content/icons/favicon/mstile-144x144.png?v=eEEro2gwd9">
 <meta name="msapplication-config" content="/Content/icons/favicon/browserconfig.xml?v=eEEro2gwd9">
-<meta name="theme-color" content="#ffffff"></head><body layout-xs="column" layout="row" ng-cloak="" ng-controller="MainCtrl as mainCtrl">    <md-content flex="100" flex-sm="100" flex-xs="100" layout="column">        <md-toolbar>            <div class="md-toolbar-tools" flex="">                <md-button class="md-icon-button" aria-label="Settings">                    <i class="material-icons" ng-click="mainCtrl.showMenu()" ng-hide="mainCtrl.canGoBack()">menu</i>                    <i class="material-icons" ng-click="mainCtrl.goBack()" ng-show="mainCtrl.canGoBack()">arrow_back</i>                </md-button>                <h2 g-current-time="'h:mm:ss a'" flex="grow"></h2>                @*<h2>{{mainCtrl.getPageTitle()}}</h2>*@                <span flex=""></span>                <md-button class="md-icon-button" aria-label="Favorite" ng-click="mainCtrl.toggleFullScreen()">                    <i class="material-icons">{{mainCtrl.fullscreen? "fullscreen_exit":"fullscreen"}}</i>                </md-button>                <md-button class="md-icon-button" aria-label="More">                    <i class="material-icons">more_vert</i>                </md-button>            </div>        </md-toolbar>        <div class="view-container">            <div ng-view="" class="view-frame"></div>        </div>    </md-content>@Scripts.Render(  "~/bundles/angular", "~/bundles/main")    <script>        angular.module("gym")            .constant("settings", {                rootUrl: "@ViewBag.AppUrl"            });</script></body></html>@{    ViewBag.Title = "Manage";    Layout = null;}
+<meta name="theme-color" content="#ffffff"></head>
+<body layout-xs="column" layout="row" ng-cloak="" ng-controller="MainCtrl as mainCtrl">
+    <md-content flex="100" flex-sm="100" flex-xs="100" layout="column">
+        <md-toolbar>
+            <div class="md-toolbar-tools" flex="">
+                <md-button class="md-icon-button" aria-label="Settings">
+                    <i class="material-icons" ng-click="mainCtrl.showMenu()" ng-hide="mainCtrl.canGoBack()">menu</i>
+                    <i class="material-icons" ng-click="mainCtrl.goBack()" ng-show="mainCtrl.canGoBack()">arrow_back</i>
+                </md-button>
+                <h2 g-current-time="'h:mm:ss a'" flex="grow"></h2>
+                @*<h2>{{mainCtrl.getPageTitle()}}</h2>*@
+                <span flex=""></span>
+                <md-button class="md-icon-button" aria-label="Favorite" ng-click="mainCtrl.toggleFullScreen()">
+                    <i class="material-icons">{{mainCtrl.fullscreen? "fullscreen_exit":"fullscreen"}}</i>
+                </md-button>
+                <md-button class="md-icon-button" aria-label="More">
+                    <i class="material-icons">more_vert</i>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <div class="view-container">
+            <div ng-view="" class="view-frame"></div>
+        </div>
+    </md-content>
+@Scripts.Render(
+  "~/bundles/angular"
+, "~/bundles/main"
+)
+    <script>
+        angular.module("gym")
+            .constant("settings", {
+                rootUrl: "@ViewBag.AppUrl"
+            });
+</script>
+</body>
+</html>
+@{
+    ViewBag.Title = "Manage";
+    Layout = null;
+}

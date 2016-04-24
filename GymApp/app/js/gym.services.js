@@ -152,14 +152,20 @@
         }
     }]);
 
-    app.factory('workoutSessionsService', ['$resource', '$log', 'settings', 'tools',
-    function workoutSessionsService($resource, $log, settings, tools) {
+    app.factory('workoutSessionsService', ['$resource', '$log', 'settings',
+    function workoutSessionsService($resource, $log, settings) {
         $log.log('gym.services.workoutSessionsService singleton');
 
         var rootUrl = settings.rootUrl || '/';
+        var odataUrl = getFullUrl('odata/WorkoutSessions');
 
-        var service = $resource(getFullUrl('odata/WorkoutSessions:sessionId'), {}, {
-            put: { method: 'PUT', params: { sessionId: '@id' } }
+        return $resource('', {},
+        {
+            get: { method: 'GET', url: odataUrl + '?$expand=exerciseSets' },
+            save: { method: 'POST', url: odataUrl },
+            update: { method: 'PATCH', params: { id: '@id' }, url: odataUrl + '(:id)' + '?$expand=exerciseSets' },
+            query: { method: 'GET', params: { id: '@id' }, url: odataUrl + '(:id)' + '?$expand=exerciseSets' },
+            remove: { method: 'DELETE', params: { id: '@id' }, url: odataUrl + '(:id)' }
         });
 
         function getFullUrl(url) {
@@ -167,19 +173,6 @@
                 ? rootUrl + '/' + url
                 : rootUrl + url;
         }
-
-        function save(session) {
-            if (!session.id) {
-                session.id = tools.guid();
-                return service.save(session);
-            } else {
-                return service.put({ sessionId: '(' + session.id + ')' }, session);
-            }
-        }
-
-        return {
-            save: save
-        };
     }]);
 
     app.value('weatherCityId', '511196');

@@ -34,7 +34,7 @@
               controller: 'WorkoutNewCtrl',
               controllerAs: 'ctrl'
           })
-          .when('/workout-session/:workoutId', {
+          .when('/workout-session/:workoutId/:sessionId', {
               templateUrl: 'app/partials/workout-session.html',
               controller: 'WorkoutSessionCtrl',
               controllerAs: 'ctrl'

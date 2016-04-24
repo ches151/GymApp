@@ -1,28 +1,53 @@
-﻿<!DOCTYPE html>
+﻿
+
+<!DOCTYPE html>
 <html lang="en" ng-app="gym">
 <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
     <title>Gym Application</title>
-    <!--<base href="./"/>-->
-    <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic'>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="bower_components/angular-material/angular-material.css" rel="stylesheet" />
-    <link href="app/css/animations.css" rel="stylesheet" />
-    <link href="app/css/Site.css" rel="stylesheet" />
+    <base href="/">
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:400,500,700,400italic">
+    <link href="//fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="mask-icon" href="/Content/icons/favicon/safari-pinned-tab.svg?v=eEEro2gwd9" color="#5bbad5">
+<link href="/bower_components/angular-material/angular-material.css" rel="stylesheet" />
+<link href="/app/css/Site.css" rel="stylesheet" />
+<link href="/app/css/animations.css" rel="stylesheet" />
+
+<link rel="apple-touch-icon" sizes="57x57" href="/Content/icons/favicon/apple-touch-icon-57x57.png?v=eEEro2gwd9">
+<link rel="apple-touch-icon" sizes="60x60" href="/Content/icons/favicon/apple-touch-icon-60x60.png?v=eEEro2gwd9">
+<link rel="apple-touch-icon" sizes="72x72" href="/Content/icons/favicon/apple-touch-icon-72x72.png?v=eEEro2gwd9">
+<link rel="apple-touch-icon" sizes="76x76" href="/Content/icons/favicon/apple-touch-icon-76x76.png?v=eEEro2gwd9">
+<link rel="apple-touch-icon" sizes="114x114" href="/Content/icons/favicon/apple-touch-icon-114x114.png?v=eEEro2gwd9">
+<link rel="apple-touch-icon" sizes="120x120" href="/Content/icons/favicon/apple-touch-icon-120x120.png?v=eEEro2gwd9">
+<link rel="apple-touch-icon" sizes="144x144" href="/Content/icons/favicon/apple-touch-icon-144x144.png?v=eEEro2gwd9">
+<link rel="apple-touch-icon" sizes="152x152" href="/Content/icons/favicon/apple-touch-icon-152x152.png?v=eEEro2gwd9">
+<link rel="apple-touch-icon" sizes="180x180" href="/Content/icons/favicon/apple-touch-icon-180x180.png?v=eEEro2gwd9">
+<link rel="icon" type="image/png" href="/Content/icons/favicon/favicon-32x32.png?v=eEEro2gwd9" sizes="32x32">
+<link rel="icon" type="image/png" href="/Content/icons/favicon/favicon-194x194.png?v=eEEro2gwd9" sizes="194x194">
+<link rel="icon" type="image/png" href="/Content/icons/favicon/favicon-96x96.png?v=eEEro2gwd9" sizes="96x96">
+<link rel="icon" type="image/png" href="/Content/icons/favicon/android-chrome-192x192.png?v=eEEro2gwd9" sizes="192x192">
+<link rel="icon" type="image/png" href="/Content/icons/favicon/favicon-16x16.png?v=eEEro2gwd9" sizes="16x16">
+<link rel="manifest" href="manifest.json?v=eEEro2gwd9">
+<link rel="mask-icon" href="/Content/icons/favicon/safari-pinned-tab.svg?v=eEEro2gwd9" color="#5bbad5">
+<link rel="shortcut icon" href="/Content/icons/favicon/favicon.ico?v=eEEro2gwd9">
+<meta name="msapplication-TileColor" content="#26a69a">
+<meta name="msapplication-TileImage" content="/Content/icons/favicon/mstile-144x144.png?v=eEEro2gwd9">
+<meta name="msapplication-config" content="/Content/icons/favicon/browserconfig.xml?v=eEEro2gwd9">
+<meta name="theme-color" content="#ffffff">
 </head>
-<body layout-xs="column" layout="row" ng-cloak ng-controller="MainCtrl as mainCtrl">
+<body layout-xs="column" layout="row" ng-cloak="" ng-controller="MainCtrl as mainCtrl">
     <md-content flex="100" flex-sm="100" flex-xs="100" layout="column">
         <md-toolbar>
-            <div class="md-toolbar-tools" flex>
+            <div class="md-toolbar-tools" flex="">
                 <md-button class="md-icon-button" aria-label="Settings">
                     <i class="material-icons" ng-click="mainCtrl.showMenu()" ng-hide="mainCtrl.canGoBack()">menu</i>
                     <i class="material-icons" ng-click="mainCtrl.goBack()" ng-show="mainCtrl.canGoBack()">arrow_back</i>
                 </md-button>
-                <!--h2 g-current-time="'h:mm:ss a'" flex="grow"></h2-->
-                <h2>{{mainCtrl.getPageTitle()}}</h2>
-                <span flex></span>
+                <h2 g-current-time="'h:mm:ss a'" flex="grow"></h2>
+
+                <span flex=""></span>
                 <md-button class="md-icon-button" aria-label="Favorite" ng-click="mainCtrl.toggleFullScreen()">
                     <i class="material-icons">{{mainCtrl.fullscreen? "fullscreen_exit":"fullscreen"}}</i>
                 </md-button>
@@ -32,30 +57,29 @@
             </div>
         </md-toolbar>
         <div class="view-container">
-            <div ng-view class="view-frame"></div>
+            <div ng-view="" class="view-frame"></div>
         </div>
     </md-content>
-    <script src="bower_components/angular/angular.js"></script>
-    <script src="bower_components/angular-route/angular-route.js"></script>
-    <script src="bower_components/angular-animate/angular-animate.js"></script>
-    <script src="bower_components/angular-resource/angular-resource.js"></script>
-    <script src="bower_components/angular-aria/angular-aria.js"></script>
-    <script src="bower_components/angular-material/angular-material.js"></script>
-    <script src="app/js/tools.js"></script>
-    <script src="app/js/gym.js"></script>
-    <script src="app/js/gym.directives.js"></script>
-    <script src="app/js/gym.services.js"></script>
-    <script src="app/js/gym.workout-list-controller.js"></script>
-    <script src="app/js/gym.workout-new-controller.js"></script>
-    <script src="app/js/gym.workout-edit-controller.js"></script>
-    <script src="app/js/gym.workout-session-controller.js"></script>
-    <script>
-    angular.module("gym")
-        .constant('settings', {
-            rootUrl: '//192.168.100.2/GymApp',
-            appName: 'My First App'
-        })
-    </script>
+    <script src="/bower_components/angular/angular.js"></script>
+    <script src="/bower_components/angular-route/angular-route.js"></script>
+    <script src="/bower_components/angular-animate/angular-animate.js"></script>
+    <script src="/bower_components/angular-resource/angular-resource.js"></script>
+    <script src="/bower_components/angular-aria/angular-aria.js"></script>
+    <script src="/bower_components/angular-material/angular-material.js"></script>
+    <script src="/app/js/tools.js"></script>
+    <script src="/app/js/gym.js"></script>
+    <script src="/app/js/gym.directives.js"></script>
+    <script src="/app/js/gym.services.js"></script>
+    <script src="/app/js/gym.workout-list-controller.js"></script>
+    <script src="/app/js/gym.workout-new-controller.js"></script>
+    <script src="/app/js/gym.workout-edit-controller.js"></script>
+    <script src="/app/js/gym.workout-session-controller.js"></script>
 
+    <script>
+        angular.module("gym")
+            .constant("settings", {
+                rootUrl: '//192.168.100.2:88',
+            });
+    </script>
 </body>
 </html>

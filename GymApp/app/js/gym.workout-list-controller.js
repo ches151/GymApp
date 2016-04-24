@@ -13,6 +13,7 @@
         self.workouts = [];
 
         self.deleteWorkout = deleteWorkout;
+        self.newGuid = newGuid;
 
         workoutsService
             .get(function(data) {
@@ -28,6 +29,9 @@
                 }
             }
             workoutsService.remove({ id: workout.id });
+        }
+        function newGuid() {
+            return tools.guid();
         }
     }
 

@@ -12,31 +12,68 @@
         var self = this;
 
         self.workoutId = $routeParams.workoutId;
+        self.sessionId = $routeParams.sessionId;
         self.workout = {};
         self.workoutSession = null;
+        self.nonSavedSet = null;
 
         /* MODEL properties */
         self.activeExercise = {};       // View: to expand current exercise        
         self.exercises = [];            // View: list of exercises        
         self.exerciseSets = [];         // View: list of sets of exercises        
         self.massUnits = massUnits;     // View: dropdown list
+        self.accomplishedExercises = {};// View: hash-table of accomplished exercises
 
-
+        /* MODEL methods */
         self.setActiveExercise = setActiveExercise;
+        self.filterExerciseSets = filterExerciseSets;
         self.showHistory = showHistory;
         self.onKeydown = onKeydown;
+        self.onChange = onChange;
         self.onBlur = onBlur;
+        self.onUnitChange = onUnitChange;
 
-        self.isExerciseAccomplished = isExerciseAccomplished;
         $scope.$on('$destroy', onDestroy);
 
-
-        workoutsService
-            .query({ id: self.workoutId }, onWorkoutObtained);
+        workoutSessionsService
+            .get({ '$filter': `id eq ${self.sessionId}` }, {}
+            , (result) => { result.value && result.value.length 
+                ? continueWorkoutSession(result.value[0])
+                : startNewWorkoutSession() }
+            , () => { throw "Failed to obtain workout session"; });
         
+        function continueWorkoutSession(session) {
+            setWorkoutSession(session);
+            var exerciseSets = session.exerciseSets;
+            workoutsService
+                .query({ id: self.workoutId }
+                , onWorkoutObtained);
+        }
+
+        function setWorkoutSession(session) {
+            if (session) {
+                self.workoutSession = new WorkoutSession(session);
+            }
+            else {
+                self.workoutSession = new WorkoutSession({
+                    dateStart: new Date(),
+                    dateEnd: null,
+                    id: self.sessionId
+                });
+                workoutSessionsService.save(self.workoutSession);
+            }
+        }
+
+        function startNewWorkoutSession() {
+            setWorkoutSession();
+            workoutsService
+                .query({ id: self.workoutId }
+                , onWorkoutObtained);
+        }
+                
         function onWorkoutObtained(workout) {
             setWorkout(workout);
-            setWorkoutSession(workout);
+            setExercises(workout);
             setExerciseSets(workout);
             setActiveExercise(self.exercises[0]);
         }
@@ -44,15 +81,62 @@
         function setWorkout(workout) {
             header.title = workout.name;
             self.workout = workout;
+        }
+
+        function setExercises(workout) {
             self.exercises = workout.exercises;
         }
 
-        function setWorkoutSession() {
-            self.workoutSession = new WorkoutSession({
-                dateStart: new Date(),
-                dateEnd: null
-            });
-            workoutSessionsService.save(self.workoutSession);
+        function setExerciseSets(workout) {
+            var workoutSessionId = self.workoutSession.id;
+            var sets = self.workoutSession.exerciseSets;
+
+            if (sets && sets.length) {
+                workout.exercises.forEach(function (ex, index) {
+                    if (!sets.some(set => set.exerciseId == ex.id)) {
+                        sets.push(new ExerciseSet({
+                            exerciseId: ex.id,
+                            workoutId: workout.id,
+                            workoutSessionId: workoutSessionId,
+                            weight: null,
+                            unit: 'kg',
+                            serialNumber: index,
+                            numberOfRepetitions: null
+                        }));
+                    } else {
+                        self.accomplishedExercises[ex.id] = true;
+                    }
+                });
+            }
+            else {
+                sets = [];
+                workout.exercises.forEach(function (ex, index) {
+                    sets.push(new ExerciseSet({
+                        exerciseId: ex.id,
+                        workoutId: workout.id,
+                        workoutSessionId: workoutSessionId,
+                        weight: null,
+                        unit: 'kg',
+                        serialNumber: index,
+                        numberOfRepetitions: null
+                    }));
+                });
+            }
+            self.exerciseSets = sets;
+            sets = null;
+        }
+
+        function filterExerciseSets(exercise, exerciseId) {
+            if (exercise && exercise.id) {
+                return exercise.id === exerciseId;
+            }
+            else {
+                return angular.equals(exercise, exerciseId);
+            }
+        }
+
+        function setActiveExercise(exercise) {
+            self.activeExercise = exercise;
         }
 
         function onDestroy() {
@@ -60,40 +144,23 @@
         }
 
         function endWorkoutSession() {
+            saveLastEditedSet();
             self.workoutSession.dateEnd = new Date();
-            workoutSessionsService.save(self.workoutSession);
+            delete self.workoutSession.exerciseSets;
+            workoutSessionsService.update(self.workoutSession);
         }
-
-        function setExerciseSets(workout) {
-            var sets = [];
-            var workoutSessionId = self.workoutSession.id;
-            workout.exercises.forEach(function (ex, index) {
-                sets.push([new ExerciseSet({
-                    exerciseId: ex.id,
-                    workoutId: workout.id,
-                    workoutSessionId: workoutSessionId,
-                    weight: null,
-                    unit: 'kg',
-                    serialNumber: index,
-                    numberOfRepetitions: null
-                })]);
-            });
-
-            self.exerciseSets = sets;
-            sets = null;
-        }
-
-        function setActiveExercise(exercise) {
-            self.activeExercise = exercise;
-        }
-        function isExerciseAccomplished(exerciseIndex) {
-            var currentExerciseSets = self.exerciseSets[exerciseIndex];
-            return currentExerciseSets.length > 1 || (currentExerciseSets.length == 1 && isSetFilled(currentExerciseSets[0]));                
+        
+        function saveLastEditedSet() {
+            if (self.nonSavedSet) {
+                updateExerciseSet(self.nonSavedSet);
+                self.nonSavedSet = null;
+            }
         }
 
         function showHistory(ev, exercise) {
             var workoutSessionId = self.workoutSession.id;
             var exerciseName = exercise.name;
+            // TODO show progress indicator
             getExerciseHistory(exercise.id, workoutSessionId)
             .then(function (exerciseSets) {
                 $mdDialog.show({
@@ -136,25 +203,29 @@
             return deferred.promise;
         }
 
-        function onKeydown(event, exerciseIndex) {
+        function onKeydown(event, exerciseId) {
             switch (event.keyCode) {
                 case $mdConstant.KEY_CODE.ENTER:
+                    addOneMoreSet(exerciseId);
+                    break;
                 case $mdConstant.KEY_CODE.TAB:
-                    addOneMoreSet(exerciseIndex);
+                    if (!event.shiftKey)
+                        addOneMoreSet(exerciseId);
                     break;
                 default:
             }
         }
 
-        function addOneMoreSet(exerciseIndex) {
-            var currentExerciseSets = self.exerciseSets[exerciseIndex];
-
-            if (areAllExerciseSetsFilled(currentExerciseSets)) {
+        function addOneMoreSet(exerciseId) {
+            console.log('addOneMoreSet', exerciseId);
+            // if all the sets are filled in
+            if (!self.exerciseSets.some(set => set.exerciseId === exerciseId && isSetEmpty(set))) {
+                var currentExerciseSets = self.exerciseSets.filter(set => set.exerciseId === exerciseId);
                 var lastSet = currentExerciseSets[currentExerciseSets.length - 1];
                 lastSet.date = new Date();
                 var workoutSessionId = self.workoutSession.id;
 
-                currentExerciseSets.push(new ExerciseSet({
+                self.exerciseSets.push(new ExerciseSet({
                     exerciseId: lastSet.exerciseId,
                     workoutId: lastSet.workoutId,
                     workoutSessionId: workoutSessionId,
@@ -165,16 +236,30 @@
                 }));
             }
         }
+        
+        function onChange(set) {
+            self.nonSavedSet = set;
+        }
 
-        function onBlur(event, exerciseIndex, set) {
+        function onBlur(set) {
+            updateExerciseSet(set);
+        }
+        
+        function onUnitChange(set) {
+            updateExerciseSet(set);
+        }
+        
+        function updateExerciseSet(set) {
             if (isSetFilled(set)) {
                 saveExerciseSet(set);
             } else if (isSetEmpty(set)) {
-                deleteExerciseSet(exerciseIndex, set);
+                deleteExerciseSet(set);
             }
+            self.nonSavedSet = null;
         }
 
         function saveExerciseSet(set) {
+            self.accomplishedExercises[set.exerciseId] = true;
             if (!set.id) {
                 set.id = tools.guid();
                 return exerciseSetsService.save(set);
@@ -183,16 +268,17 @@
             }
         }
 
-        function deleteExerciseSet(exerciseIndex, set) {
+        function deleteExerciseSet(set) {
             var setId = set.id;
             if (setId) {
                 exerciseSetsService.remove({ id: setId });
             }
-
-            var currentExerciseSets = self.exerciseSets[exerciseIndex];
-            if (currentExerciseSets.length > 1) {
-                var index = currentExerciseSets.indexOf(set);
-                currentExerciseSets.splice(index, 1);
+            if (self.exerciseSets.filter(s => s.exerciseId === set.exerciseId).length > 1) {
+                var index = self.exerciseSets.indexOf(set);
+                self.exerciseSets.splice(index, 1);
+            } else {
+                set.id = null;
+                self.accomplishedExercises[set.exerciseId] = false;
             }
         }
 

@@ -1,5 +1,8 @@
 ﻿using GymWebApp.Models;
+using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Dispatcher;
+using System.Web.OData;
 using System.Web.OData.Builder;
 using System.Web.OData.Extensions;
 
@@ -25,7 +28,15 @@ namespace GymWebApp
             builder.EntitySet<WorkoutSession>("WorkoutSessions");
             builder.EntitySet<ExerciseSet>("ExerciseSets");
             builder.EnableLowerCamelCase();
-            config.MapODataServiceRoute("odata", "odata", builder.GetEdmModel());
+
+            // Need this. Otherwise SingleResult<WorkoutSession> GetWorkoutSession tries to return null and then fails to serialize the null value.
+            config.MapODataServiceRoute(
+                "odata"
+                , "odata"
+                , builder.GetEdmModel()
+                , defaultHandler: HttpClientFactory.CreatePipeline(
+                    innerHandler: new HttpControllerDispatcher(config)
+                    , handlers: new[] { new ODataNullValueMessageHandler() }));
         }
     }
 }

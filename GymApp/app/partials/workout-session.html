@@ -3,7 +3,7 @@
         <div ng-repeat="ex in ctrl.exercises track by $index">
             <md-list-item class="md-2-line" ng-hide="ex.id == ctrl.activeExercise.id" ng-click="ctrl.setActiveExercise(ex)">
                 <div class="md-list-item-text">
-                    <h3><i class="material-icons g-accomplished" ng-show="ctrl.isExerciseAccomplished($index)">check_circle</i>{{ex.name}}</h3>
+                    <h3><i class="material-icons g-accomplished" ng-show="ctrl.accomplishedExercises[ex.id]">check_circle</i>{{ex.name}}</h3>
                 </div>
                 <md-divider ng-if="!$last"></md-divider>
             </md-list-item>
@@ -20,10 +20,10 @@
                 </md-card-title>
                 <md-card-content>
                     <form>
-                        <div layout-gt-sm="row" ng-repeat="set in ctrl.exerciseSets[$index] track by $index">
+                        <div layout-gt-sm="row" ng-repeat="set in ctrl.exerciseSets | filter:ex.id:ctrl.filterExerciseSets track by $index">
                             <md-input-container class="g-input-unit">
                                 <label>Unit</label>
-                                <md-select ng-model="set.unit">
+                                <md-select ng-model="set.unit" ng-change="ctrl.onUnitChange(set)">
                                     <md-option ng-repeat="unit in ctrl.massUnits" value="{{unit.name}}">{{unit.name}}</md-option>
                                 </md-select>
                             </md-input-container>
@@ -32,7 +32,8 @@
                                        type="number"
                                        placeholder="Weight"
                                        ng-model="set.weight"
-                                       ng-blur="ctrl.onBlur($event, $parent.$index, set)"
+                                       ng-blur="ctrl.onBlur(set)"
+                                       ng-change="ctrl.onChange(set)"
                                        g-focus-next-on-enter
                                        autofocus
                                        style="text-align: center">
@@ -43,8 +44,9 @@
                                        type="number"
                                        placeholder="Reps"
                                        ng-model="set.numberOfRepetitions"
-                                       ng-blur="ctrl.onBlur($event, $parent.$index, set)"
-                                       ng-keydown="ctrl.onKeydown($event, $parent.$index)"
+                                       ng-blur="ctrl.onBlur(set)"
+                                       ng-change="ctrl.onChange(set)"
+                                       ng-keydown="ctrl.onKeydown($event, ex.id)"
                                        style="text-align: center">
                             </md-input-container>
                         </div>
