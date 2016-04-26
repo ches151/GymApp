@@ -100,7 +100,7 @@
                             workoutSessionId: workoutSessionId,
                             weight: null,
                             unit: 'kg',
-                            serialNumber: index,
+                            serialNumber: 0,
                             numberOfRepetitions: null
                         }));
                     } else {
@@ -117,7 +117,7 @@
                         workoutSessionId: workoutSessionId,
                         weight: null,
                         unit: 'kg',
-                        serialNumber: index,
+                        serialNumber: 0,
                         numberOfRepetitions: null
                     }));
                 });
