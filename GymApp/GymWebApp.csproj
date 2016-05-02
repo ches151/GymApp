@@ -424,6 +424,7 @@
     <Content Include="Content\icons\favicon\favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="app\css\Site.css" />
+    <None Include="Config\ConnectionStrings.config" />
     <None Include="gruntfile.js" />
     <None Include="gulpfile.js" />
     <Content Include="index.html" />

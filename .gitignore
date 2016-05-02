@@ -215,8 +215,6 @@ ModelManifest.xml
 node_modules/
 bower_components/
 .idea
-*.mdf
-*.ldf
 *.min.js
 *.min.js.gzip
 *.min.js.map
