@@ -214,6 +214,7 @@ ModelManifest.xml
 
 node_modules/
 bower_components/
+Config/
 .idea
 *.min.js
 *.min.js.gzip
