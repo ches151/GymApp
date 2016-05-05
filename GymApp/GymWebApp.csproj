@@ -49,6 +49,7 @@
         </ObjectGroup>
       </Objects>
     </PublishDatabaseSettings>
+    <PublishDatabases>false</PublishDatabases>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -303,42 +304,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="app\css\animations.css" />
-    <Content Include="app\css\animations.min.css">
-      <DependentUpon>animations.css</DependentUpon>
-    </Content>
-    <Content Include="app\css\Site.min.css">
-      <DependentUpon>Site.css</DependentUpon>
-    </Content>
-    <Content Include="app\js\gym.directives.min.js">
-      <DependentUpon>gym.directives.js</DependentUpon>
-    </Content>
-    <Content Include="app\js\gym.min.js">
-      <DependentUpon>gym.js</DependentUpon>
-    </Content>
     <Content Include="app\js\gym.services.js" />
-    <Content Include="app\js\gym.services.min.js">
-      <DependentUpon>gym.services.js</DependentUpon>
-    </Content>
     <Content Include="app\js\gym.workout-edit-controller.js" />
     <Content Include="app\js\gym.js" />
-    <Content Include="app\js\gym.workout-edit-controller.min.js">
-      <DependentUpon>gym.workout-edit-controller.js</DependentUpon>
-    </Content>
     <Content Include="app\js\gym.workout-list-controller.js" />
-    <Content Include="app\js\gym.workout-list-controller.min.js">
-      <DependentUpon>gym.workout-list-controller.js</DependentUpon>
-    </Content>
     <Content Include="app\js\gym.workout-new-controller.js" />
-    <Content Include="app\js\gym.workout-new-controller.min.js">
-      <DependentUpon>gym.workout-new-controller.js</DependentUpon>
-    </Content>
     <Content Include="app\js\gym.workout-session-controller.js" />
-    <Content Include="app\js\gym.workout-session-controller.min.js">
-      <DependentUpon>gym.workout-session-controller.js</DependentUpon>
-    </Content>
-    <Content Include="app\js\tools.min.js">
-      <DependentUpon>tools.js</DependentUpon>
-    </Content>
     <Content Include="app\partials\exerciseset-one-exercise.html" />
     <Content Include="app\partials\workout-edit.html" />
     <Content Include="app\partials\workout-new.html" />
@@ -423,7 +394,7 @@
     <Content Include="Scripts\ai.0.22.8-build00154.js" />
     <Content Include="Scripts\ai.0.22.8-build00154.min.js" />
     <Content Include="test\unit\karma.conf.js" />
-    <Content Include="Scripts\_references.js" />
+    <None Include="Scripts\_references.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -431,10 +402,6 @@
       <DependentUpon>Web.config</DependentUpon>
     </Content>
     <Content Include="Web.Release.config">
-      <DependentUpon>Web.config</DependentUpon>
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Web.Prod.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
     </Content>
@@ -488,63 +455,9 @@
     </Content>
     <Content Include="bower_components\angular\angular.min.js.gzip" />
     <Content Include="bower_components\angular\angular.min.js.map" />
-    <Content Include="app\js\gym.directives.min.js.map">
-      <DependentUpon>gym.directives.min.js</DependentUpon>
-    </Content>
-    <Content Include="app\js\gym.directives.min.js.gzip">
-      <DependentUpon>gym.directives.min.js</DependentUpon>
-    </Content>
-    <Content Include="app\js\gym.min.js.map">
-      <DependentUpon>gym.min.js</DependentUpon>
-    </Content>
-    <Content Include="app\js\gym.min.js.gzip">
-      <DependentUpon>gym.min.js</DependentUpon>
-    </Content>
-    <Content Include="app\js\gym.services.min.js.map">
-      <DependentUpon>gym.services.min.js</DependentUpon>
-    </Content>
-    <Content Include="app\js\gym.services.min.js.gzip">
-      <DependentUpon>gym.services.min.js</DependentUpon>
-    </Content>
-    <Content Include="app\js\gym.workout-edit-controller.min.js.map">
-      <DependentUpon>gym.workout-edit-controller.min.js</DependentUpon>
-    </Content>
-    <Content Include="app\js\gym.workout-edit-controller.min.js.gzip">
-      <DependentUpon>gym.workout-edit-controller.min.js</DependentUpon>
-    </Content>
-    <Content Include="app\js\gym.workout-list-controller.min.js.map">
-      <DependentUpon>gym.workout-list-controller.min.js</DependentUpon>
-    </Content>
-    <Content Include="app\js\gym.workout-list-controller.min.js.gzip">
-      <DependentUpon>gym.workout-list-controller.min.js</DependentUpon>
-    </Content>
-    <Content Include="app\js\gym.workout-new-controller.min.js.map">
-      <DependentUpon>gym.workout-new-controller.min.js</DependentUpon>
-    </Content>
-    <Content Include="app\js\gym.workout-new-controller.min.js.gzip">
-      <DependentUpon>gym.workout-new-controller.min.js</DependentUpon>
-    </Content>
-    <Content Include="app\js\gym.workout-session-controller.min.js.map">
-      <DependentUpon>gym.workout-session-controller.min.js</DependentUpon>
-    </Content>
-    <Content Include="app\js\gym.workout-session-controller.min.js.gzip">
-      <DependentUpon>gym.workout-session-controller.min.js</DependentUpon>
-    </Content>
-    <Content Include="app\js\tools.min.js.map">
-      <DependentUpon>tools.min.js</DependentUpon>
-    </Content>
-    <Content Include="app\js\tools.min.js.gzip">
-      <DependentUpon>tools.min.js</DependentUpon>
-    </Content>
     <Content Include="Content\css.css.bundle" />
     <Content Include="Content\css.min.css.gzip">
       <DependentUpon>css.min.css</DependentUpon>
-    </Content>
-    <Content Include="app\css\animations.min.css.gzip">
-      <DependentUpon>animations.min.css</DependentUpon>
-    </Content>
-    <Content Include="app\css\Site.min.css.gzip">
-      <DependentUpon>Site.min.css</DependentUpon>
     </Content>
     <Content Include=".deployment" />
     <Content Include="deploy.cmd" />
