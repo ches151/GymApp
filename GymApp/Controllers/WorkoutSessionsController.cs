@@ -11,7 +11,7 @@ using GymWebApp.Models;
 
 namespace GymWebApp.Controllers
 {
-    [EnableCors(origins: "http://192.168.100.2:8080", headers: "*", methods: "*")]
+    [EnableCors(origins: "http://192.168.10.2:8080", headers: "*", methods: "*")]
     public class WorkoutSessionsController : ODataController
     {
         private MainDataModel db = new MainDataModel();
