@@ -136,8 +136,9 @@
             }
         }
 
-        function setActiveExercise(exercise) {
-            self.activeExercise = exercise;
+        function setActiveExercise(exercise, ev) {
+            if (exercise || !(ev.path.some(function(el){ return el instanceof HTMLFormElement; })))
+                self.activeExercise = exercise;
         }
 
         function onDestroy() {
