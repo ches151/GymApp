@@ -327,8 +327,6 @@
     <Content Include="bower_components\angular-aria\angular-aria.min.js.map" />
     <Content Include="bower_components\angular-material\angular-material.css" />
     <Content Include="bower_components\angular-material\angular-material.js" />
-    <Content Include="bower_components\angular-material\angular-material.layouts.css" />
-    <Content Include="bower_components\angular-material\angular-material.layouts.min.css" />
     <Content Include="bower_components\angular-material\angular-material.min.css" />
     <Content Include="bower_components\angular-material\angular-material.min.js" />
     <Content Include="bower_components\angular-material\angular-material.scss" />

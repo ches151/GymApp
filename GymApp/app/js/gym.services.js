@@ -84,10 +84,10 @@
 
         return $resource('', {},
         {
-            get: { method: 'GET', url: odataUrl + '?$expand=exercises($orderby=dateCreated)' },
-            save: { method: 'POST', url: odataUrl + '?$expand=exercises($orderby=dateCreated)' },
+            get: { method: 'GET', url: odataUrl + '?$expand=exercises($orderby=name)' },
+            save: { method: 'POST', url: odataUrl + '?$expand=exercises($orderby=name)' },
             update: { method: 'PATCH', params: { id: '@id' }, url: odataUrl + '(:id)' },
-            query: { method: 'GET', params: { id: '@id' }, url: odataUrl + '(:id)?$expand=exercises($orderby=dateCreated)'},
+            query: { method: 'GET', params: { id: '@id' }, url: odataUrl + '(:id)?$expand=exercises($orderby=name)'},
             remove: { method: 'DELETE', params: { id: '@id' }, url: odataUrl + '(:id)' }
         });
 
