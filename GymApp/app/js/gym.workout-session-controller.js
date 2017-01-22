@@ -158,6 +158,7 @@
         }
 
         function showHistory(ev, exercise) {
+            cancelBubble(ev);
             var workoutSessionId = self.workoutSession.id;
             var exerciseName = exercise.name;
             // TODO show progress indicator
@@ -295,6 +296,12 @@
         }
         function isSetEmpty(set) {
             return !set.weight && !set.numberOfRepetitions;
+        }
+
+        function cancelBubble(e) {
+            var evt = e ? e : window.event;
+            if (evt.stopPropagation) evt.stopPropagation();
+            if (evt.cancelBubble != null) evt.cancelBubble = true;
         }
     }
     angular.module('gym')
