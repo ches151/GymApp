@@ -30,9 +30,10 @@ md-list .md-button {
     text-align: left;
     width: 100%;
 }
-md-list .md-button.selected {
-    color: #03a9f4;
-}
+
+    md-list .md-button.selected {
+        color: #03a9f4;
+    }
 
 md-sidenav md-list {
     padding: 0 0 8px 0;
@@ -48,26 +49,26 @@ md-sidenav md-list {
     padding-top: 5px;
 }
 
-#content .md-button.contact {
-    background-color: transparent;
-    border: none;
-    width: 48px;
-    height: 48px;
-    margin: 8px auto 16px 0;
-    position: absolute;
-    top: 10px;
-    right: 40px;
-}
+    #content .md-button.contact {
+        background-color: transparent;
+        border: none;
+        width: 48px;
+        height: 48px;
+        margin: 8px auto 16px 0;
+        position: absolute;
+        top: 10px;
+        right: 40px;
+    }
 
-#content md-icon.avatar {
-    margin-top: 10px;
-}
+    #content md-icon.avatar {
+        margin-top: 10px;
+    }
 
-#content .md-button.contact > md-icon {
-    fill: black;
-    width: 36px;
-    height: 36px;
-}
+    #content .md-button.contact > md-icon {
+        fill: black;
+        width: 36px;
+        height: 36px;
+    }
 
 md-button.menuBtn > md-icon {
     fill: white;
@@ -142,19 +143,22 @@ span.name {
 .md-button.md-fab.md-mini .material-icons {
     line-height: 40px;
 }
+
 .md-button.md-fab.g-start-workout .material-icons {
     padding-left: 3px;
 }
+
 .md-button.md-fab.g-right-bottom-button {
     position: fixed;
     bottom: 12px;
-    right: 12px;/* remove this background-color assignment and customize the theme properly instead*/
+    right: 12px; /* remove this background-color assignment and customize the theme properly instead*/
     background-color: #0288D1;
     z-index: 21;
 }
-.md-button.md-fab.g-right-bottom-button:not([disabled]):hover {
-    background-color: #0288D1;
-}
+
+    .md-button.md-fab.g-right-bottom-button:not([disabled]):hover {
+        background-color: #0288D1;
+    }
 
 .material-icons.md-18 {
     font-size: 18px;
@@ -176,17 +180,17 @@ span.name {
     color: rgba(0, 0, 0, 0.54);
 }
 
-.material-icons.md-dark.md-inactive {
-    color: rgba(0, 0, 0, 0.26);
-}
+    .material-icons.md-dark.md-inactive {
+        color: rgba(0, 0, 0, 0.26);
+    }
 
 .material-icons.md-light {
     color: rgba(255, 255, 255, 1);
 }
 
-.material-icons.md-light.md-inactive {
-    color: rgba(255, 255, 255, 0.3);
-}
+    .material-icons.md-light.md-inactive {
+        color: rgba(255, 255, 255, 0.3);
+    }
 
 .material-icons.black {
     color: black;
@@ -200,48 +204,61 @@ md-input-container {
 .md-headline {
     margin-bottom: .5em;
 }
-.md-headline.md-input-has-placeholder {
-    margin-bottom: 0;
-}
+
+    .md-headline.md-input-has-placeholder {
+        margin-bottom: 0;
+    }
+
 .md-subhead .g-exercise:first-child {
     margin-top: 1em;
 }
 
 .md-autocomplete-suggestions-container li span .highlight {
     background: yellow;
-    color:  inherit;
+    color: inherit;
 }
+
 .g-newcard-helper .g-exercise {
     clear: both;
 }
-.g-newcard-helper .g-exercise button {
-    float: left;
-}
-.g-newcard-helper .g-exercise .g-exercise-name {
-    float: left;
-    margin-top: 0.65em;
-}
+
+    .g-newcard-helper .g-exercise button {
+        float: left;
+    }
+
+    .g-newcard-helper .g-exercise .g-exercise-name {
+        float: left;
+        margin-top: 0.65em;
+    }
+
 md-card.g-newcard-helper md-card-title md-card-title-text:only-child .md-subhead {
-    padding-top: 0;    
+    padding-top: 0;
 }
-#workoutName+.md-errors-spacer {
+
+#workoutName + .md-errors-spacer {
     display: none;
 }
+
 md-card.g-workout:last-child {
     margin-bottom: calc(56px + 12px + 4px);
 }
+
 .md-toolbar-tools [g-current-time] {
     text-align: center;
 }
+
 .g-input-unit {
     width: 22%;
 }
+
 .g-input-weight {
     width: 33%;
 }
+
 .g-input-reps {
     width: 33%;
 }
+
 .g-accomplished {
     vertical-align: bottom;
     padding: 0 2pt 0 0;

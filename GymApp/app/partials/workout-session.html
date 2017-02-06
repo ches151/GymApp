@@ -7,13 +7,13 @@
                 </div>
                 <md-divider ng-if="!$last"></md-divider>
             </md-list-item>
-            <md-card id="{{ex.id}}" ng-show="ex.id == ctrl.activeExercise.id">
+            <md-card id="{{ex.id}}" ng-show="ex.id == ctrl.activeExercise.id" ng-click="ctrl.setActiveExercise(null, $event)">
                 <md-card-title>
                     <md-card-title-text>
                         <span class="md-headline">{{ ex.name }}</span>
                      </md-card-title-text>
                     <md-card-title-media>
-                        <md-button class="md-icon-button md-primary" ng-click="ctrl.showHistory($event, ex)" aria-label="History">
+                        <md-button class="md-icon-button md-primary" ng-click="ctrl.showHistory($event, ex)" ng-class="{'spinner': ctrl.isRequestingHistory}" aria-label="History">
                             <i class="material-icons">history</i>
                         </md-button>
                     </md-card-title-media>

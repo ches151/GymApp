@@ -71,10 +71,13 @@
         }
 
         function saveWorkout() {
-            redirectToListOfWorkouts();
-            throw "Not Implemented";
             if (canSave(self.workout)) {
                 setWorkoutNameIfEmpty(self.workout);
+
+                // ODATA doesn't allow updating child collections, so we will cover this in several steps instead:
+                // 1. update workout name
+                // 2. update $ref
+                delete self.workout.exercises;
 
                 workoutsService
                     .update({ id: self.workout.id }, self.workout, function () {
