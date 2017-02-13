@@ -9,6 +9,7 @@ using System.Web.Http.Cors;
 using System.Web.Http.ModelBinding;
 using System.Web.OData;
 using GymWebApp.Models;
+using System.Collections.Generic;
 
 namespace GymWebApp.Controllers
 {
@@ -22,7 +23,7 @@ namespace GymWebApp.Controllers
         public IQueryable<Workout> GetWorkouts()
         {
             var res = db.Workouts.OrderBy(w => w.Name);
-            
+
             return res;
         }
 
@@ -34,9 +35,9 @@ namespace GymWebApp.Controllers
         }
 
         // PUT: odata/Workouts(5)
-        public async Task<IHttpActionResult> Put([FromODataUri] Guid key, Delta<Workout> patch)
+        public async Task<IHttpActionResult> Put([FromODataUri] Guid key, Workout vm)
         {
-            Validate(patch.GetEntity());
+            Validate(vm);
 
             if (!ModelState.IsValid)
             {
@@ -49,7 +50,21 @@ namespace GymWebApp.Controllers
                 return NotFound();
             }
 
-            patch.Put(workout);
+            workout.Name = vm.Name;
+            foreach (var ex in vm.Exercises.Except(workout.Exercises).ToArray())
+            {
+                db.Exercises.Attach(ex);
+                workout.Exercises.Add(ex);
+            }
+            foreach (var ex in vm.Exercises.Except(db.Exercises).ToArray())
+            {
+                db.Exercises.Add(ex);
+                workout.Exercises.Add(ex);
+            }
+            foreach (var ex in workout.Exercises.Except(vm.Exercises).ToArray())
+            {
+                workout.Exercises.Remove(ex);
+            }
 
             try
             {
@@ -78,7 +93,7 @@ namespace GymWebApp.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var exercisesIds = db.Exercises.Select(e=>e.Id).ToList();
+            var exercisesIds = db.Exercises.Select(e => e.Id).ToList();
             workout.DateCreated = DateTime.Now;
             db.Workouts.AddOrUpdate(workout);
             workout.Exercises.ForEach(exercise =>
@@ -92,7 +107,7 @@ namespace GymWebApp.Controllers
 
             try
             {
-                
+
                 await db.SaveChangesAsync();
             }
             catch (DbUpdateException)

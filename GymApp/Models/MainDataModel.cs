@@ -40,7 +40,23 @@
     {
         [Key]
         public Guid Id { get; set; }
-        
+
+        public override bool Equals(object obj)
+        {
+            var item = obj as EntityBase;
+
+            if (item == null)
+            {
+                return false;
+            }
+
+            return Id.Equals(item.Id);
+        }
+
+        public override int GetHashCode()
+        {
+            return Id.GetHashCode();
+        }
     }
 
     public class Exercise : EntityBase
@@ -62,6 +78,23 @@
 
         public Exercise() {
             DateCreated = DateTime.Now;
+        }
+
+        public override bool Equals(object obj)
+        {
+            var item = obj as Exercise;
+
+            if (item == null)
+            {
+                return false;
+            }
+
+            return Name.Equals(item.Name);
+        }
+
+        public override int GetHashCode()
+        {
+            return Name.GetHashCode();
         }
     }
     /// <summary>

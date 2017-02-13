@@ -18,7 +18,13 @@ namespace GymWebApp
         {
             AreaRegistration.RegisterAllAreas();
 
-            GlobalConfiguration.Configure(WebApiConfig.Register);
+            // http://stackoverflow.com/a/27191598/5910706
+            GlobalConfiguration.Configure(config =>
+            {
+                ODataConfig.Register(config); //this has to be before WebApi
+                WebApiConfig.Register(config);
+
+            });
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);

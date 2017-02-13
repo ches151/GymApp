@@ -6,7 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using GymWebApp.Models;
 
-namespace GymApp
+namespace GymWebApp
 {
     public partial class KeepAlive : System.Web.UI.Page
     {
