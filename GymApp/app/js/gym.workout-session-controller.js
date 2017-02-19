@@ -3,8 +3,8 @@
     angular.module('gym')
         .controller('WorkoutSessionCtrl', WorkoutSessionCtrl);
 
-    WorkoutSessionCtrl.$inject = ['$log', '$mdConstant', '$routeParams', '$scope', '$mdDialog', '$q', 'tools', 'header', 'massUnits', 'workoutsService', 'exerciseSetsService', 'workoutSessionsService'];
-    function WorkoutSessionCtrl($log, $mdConstant, $routeParams, $scope, $mdDialog, $q, tools, header, massUnits, workoutsService, exerciseSetsService, workoutSessionsService) {
+    WorkoutSessionCtrl.$inject = ['$log', '$mdConstant', '$routeParams', '$scope', '$mdDialog', '$q', 'tools', 'header', 'massUnits', 'workoutsService', 'exerciseSetsService', 'workoutSessionsService', 'nonameService'];
+    function WorkoutSessionCtrl($log, $mdConstant, $routeParams, $scope, $mdDialog, $q, tools, header, massUnits, workoutsService, exerciseSetsService, workoutSessionsService, nonameService) {
         $log.log("gym.WorkoutSessionCtrl constructor");
 
         header.canGoBack = true;
@@ -18,14 +18,14 @@
         self.nonSavedSet = null;
         self.isRequestingHistory = false;
 
-        /* MODEL properties */
-        self.activeExercise = {};       // View: to expand current exercise        
-        self.exercises = [];            // View: list of exercises        
-        self.exerciseSets = [];         // View: list of sets of exercises        
+        // MODEL properties
+        self.activeExercise = {};       // View: to expand current exercise
+        self.exercises = [];            // View: list of exercises
+        self.exerciseSets = [];         // View: list of sets of exercises
         self.massUnits = massUnits;     // View: dropdown list
         self.accomplishedExercises = {};// View: hash-table of accomplished exercises
 
-        /* MODEL methods */
+        // MODEL methods
         self.setActiveExercise = setActiveExercise;
         self.filterExerciseSets = filterExerciseSets;
         self.showHistory = showHistory;
@@ -38,9 +38,11 @@
 
         workoutSessionsService
             .get({ '$filter': `id eq ${self.sessionId}` }, {}
-            , (result) => { result.value && result.value.length
-                    ? continueWorkoutSession(result.value[0])
-                    : startNewWorkoutSession() }
+            , (result) => {
+                result.value && result.value.length
+                        ? continueWorkoutSession(result.value[0])
+                        : startNewWorkoutSession()
+            }
             , () => { throw "Failed to obtain workout session"; });
 
         function continueWorkoutSession(session) {
@@ -63,6 +65,7 @@
                 });
                 workoutSessionsService.save(self.workoutSession);
             }
+            nonameService.workoutStartTime = new Date(self.workoutSession.dateStart).setMinutes(self.workoutSession.dateStart.getMinutes() - self.workoutSession.dateStart.getTimezoneOffset());
         }
 
         function startNewWorkoutSession() {
@@ -137,7 +140,7 @@
         }
 
         function setActiveExercise(exercise, ev) {
-            if (exercise || !(ev.path.some(function(el){ return el instanceof HTMLFormElement; })))
+            if (exercise || !(ev.path.some(function (el) { return el instanceof HTMLFormElement; })))
                 self.activeExercise = exercise;
         }
 
@@ -150,6 +153,7 @@
             self.workoutSession.dateEnd = new Date();
             delete self.workoutSession.exerciseSets;
             workoutSessionsService.update(self.workoutSession);
+            nonameService.workoutStartTime = new Date(0);
         }
 
         function saveLastEditedSet() {
@@ -333,7 +337,7 @@
 
     function ExerciseSet(args) {
         this.id = args.id;
-        this.date = args.date;
+        this.date = args.date instanceof Date ? args.date : new Date(args.date);
         this.rowVersion = args.rowVersion;
         this.exerciseId = args.exerciseId;
         this.workoutId = args.workoutId;
@@ -346,8 +350,8 @@
 
     function WorkoutSession(args) {
         this.id = args.id;
-        this.dateStart = args.dateStart;
-        this.dateEnd = args.dateEnd;
+        this.dateStart = args.dateStart instanceof Date ? args.dateStart : new Date(args.dateStart);
+        this.dateEnd = args.dateEnd instanceof Date ? args.dateEnd : new Date(args.dateEnd);
         this.rowVersion = args.rowVersion;
         this.exerciseSets = args.exerciseSets;
     }

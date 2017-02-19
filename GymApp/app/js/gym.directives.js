@@ -1,7 +1,7 @@
-(function() {
+(function () {
     "use strict";
     angular.module("gym.directives", [])
-    .directive("gFocusNextOnEnter", function() {
+    .directive("gFocusNextOnEnter", function () {
         return {
             restrict: "A",
             link: function ($scope, elem) {
@@ -40,69 +40,99 @@
             }
         };
     }])
-    .directive("gCurrentTime", ['$interval', 'dateFilter', function($interval, dateFilter) {
-        
+    .directive("gCurrentTime", ['$interval', 'dateFilter', function ($interval, dateFilter) {
+
         function link(scope, element, attrs) {
-            var format, 
+            var format,
             timeoutId;
-            
+
             function updateTime() {
                 element.text(dateFilter(new Date(), format));
             }
-            
-            scope.$watch(attrs.gCurrentTime, function(value) {
+
+            scope.$watch(attrs.gCurrentTime, function (value) {
                 format = value;
                 updateTime();
             });
-            
-            element.on('$destroy', function() {
+
+            element.on('$destroy', function () {
                 $interval.cancel(timeoutId);
             });
-            
+
             // start the UI update process; save the timeoutId for canceling
-            timeoutId = $interval(function() {
+            timeoutId = $interval(function () {
                 updateTime();
                 // update DOM
             }, 1000);
         }
-        
+
         return {
             link: link
         };
-    }
-    ])
-    .directive("gWeather", ['$interval', 'weatherService', 'tools', function($interval, weatherService, tools) {
-        
+    }])
+    .directive("gCustomTimer", ['$log', '$interval', 'tools', 'nonameService',
+    function ($log, $interval, tools, nonameService) {
+        $log.log('gym.directives.gCustomTimer constructor');
+
+
+        function link(scope, element, attrs) {
+            $log.info('gym.directives.gCustomTimer.link');
+            var format, timeoutId;
+
+            function updateTime() {
+                var timeElapsed = new Date(new Date() - nonameService.workoutStartTime);
+                element.text(tools.formatTime(timeElapsed, format));
+            }
+
+            scope.$watch(attrs.format, function (value) {
+                $log.info("gym.directives.scope.$watch(attrs.format)");
+                format = value;
+                updateTime();
+            });
+
+            element.on('$destroy', function () {
+                $interval.cancel(timeoutId);
+            });
+
+            timeoutId = $interval(updateTime, 1000);
+        }
+
+        return {
+            link: link
+        };
+    }])
+    .directive("gWeather", ['$interval', 'weatherService', 'tools', function ($interval, weatherService, tools) {
+
         function link(scope, element) {
             var timeoutId;
             var weatherImgUrlTemplate = 'http://openweathermap.org/img/w/{0}.png';
             var weatherImgUrl = '';
 
             update();
-            
+
             function update() {
-                weatherService.getCurrentWeather(function getCurrentWeatherCallback(weatherData){
+                weatherService.getCurrentWeather(function getCurrentWeatherCallback(weatherData) {
                     console.log(weatherData);
                     var weather = weatherData.weather.length && weatherData.weather[0];
                     if (weather) {
                         weatherImgUrl = weatherImgUrlTemplate.replace(/\{0\}/i, weather.icon);
                     }
-                    var temp = weatherData.main.temp-273.15;
+                    var temp = weatherData.main.temp - 273.15;
                     element.html(tools.formatStr('<span>{0} °C</span>', temp));
                 });
             }
-            
-            element.on('$destroy', function() {
+
+            element.on('$destroy', function () {
                 $interval.cancel(timeoutId);
             });
-            
+
             // start the UI update process; save the timeoutId for canceling
-            timeoutId = $interval(function() {
+            timeoutId = $interval(function () {
                 update();
                 // update DOM
             }, 600000);
         }
-        
+
         return {
             link: link
         };

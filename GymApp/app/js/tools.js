@@ -90,6 +90,15 @@
                     ? args[number] 
                     : match;
                 });
+            },
+            formatTime: function formatTime(date, format) {
+                var hh = ("0" + date.getHours()).substr(-2),
+                    mm = ("0" + date.getMinutes()).substr(-2),
+                    ss = ("0" + date.getSeconds()).substr(-2)
+                return format
+                    .replace(/hh/g, hh)
+                    .replace(/mm/g, mm)
+                    .replace(/ss/g, ss);
             }
         };
     }

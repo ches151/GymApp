@@ -1,36 +1,38 @@
 (function () {
     'use strict';
     var app = angular.module('gym.services', ['tools']);
-    app.factory('domFactory', ['$window', '$document', '$timeout', '$location', '$anchorScroll', '$log', 'tools',
-        function ($window, $document, $timeout, $location, $anchorScroll, $log, tools) {
-            $log.log('gym.services.domFactory singleton');
 
-            return {
-                setFocus: function (id) {
-                    // timeout makes sure that it is invoked after any other event has been triggered.
-                    // e.g. click events that need to run before the focus or
-                    // inputs elements that are in a disabled state but are enabled when those events
-                    // are triggered.
-                    $timeout(function () {
-                        var element = $window.document.getElementById(id);
-                        if (element)
-                            element.focus();
-                    });
-                },
-                launchFullscreen: function () {
-                    tools.enterFullscreen($document[0].documentElement);
-                },
-                exitFullscreen: function () {
-                    tools.exitFullscreen();
-                },
-                scrollElementIntoView: function (id) {
-                    $location.hash(id);
-                    $anchorScroll();
-                }
-            };
-        }]);
-    app.factory('header', ['$window', '$location', '$log', 'domFactory'
-    , function ($window, $location, $log, domFactory) {
+    app.factory('domFactory', ['$window', '$document', '$timeout', '$location', '$anchorScroll', '$log', 'tools',
+    function ($window, $document, $timeout, $location, $anchorScroll, $log, tools) {
+        $log.log('gym.services.domFactory singleton');
+
+        return {
+            setFocus: function (id) {
+                // timeout makes sure that it is invoked after any other event has been triggered.
+                // e.g. click events that need to run before the focus or
+                // inputs elements that are in a disabled state but are enabled when those events
+                // are triggered.
+                $timeout(function () {
+                    var element = $window.document.getElementById(id);
+                    if (element)
+                        element.focus();
+                });
+            },
+            launchFullscreen: function () {
+                tools.enterFullscreen($document[0].documentElement);
+            },
+            exitFullscreen: function () {
+                tools.exitFullscreen();
+            },
+            scrollElementIntoView: function (id) {
+                $location.hash(id);
+                $anchorScroll();
+            }
+        };
+    }]);
+
+    app.factory('header', ['$window', '$location', '$log', 'domFactory',
+    function ($window, $location, $log, domFactory) {
         $log.log('gym.services.header singleton');
         var self = this;
         self.fullscreen = false;
@@ -61,7 +63,9 @@
             go: go
         };
     }]);
-    app.factory('massUnits', ['$log', function ($log) {
+
+    app.factory('massUnits', ['$log',
+    function ($log) {
         $log.log('gym.services.massUnits singleton');
 
         return [
@@ -75,10 +79,26 @@
             }];
     }]);
 
+    app.factory('nonameService', ['$log',
+    function nonameService($log) {
+        $log.log('gym.services.nonameService singleton');
+        var workoutStartTime = new Date(0);
+        var result = {
+            workoutStartTime: null,
+            get workoutStartTime() {
+                return workoutStartTime;
+            },
+            set workoutStartTime(time) {
+                workoutStartTime = time;
+            }
+        };
+        return result;
+    }]);
+
     app.factory('workoutsService', ['$resource', '$log', 'settings',
     function workoutsService($resource, $log, settings) {
         $log.log('gym.services.workoutsService singleton');
-        
+
         var rootUrl = settings.rootUrl || '/';
         var odataUrl = getFullUrl('odata/Workouts');
 
@@ -87,7 +107,7 @@
             get: { method: 'GET', url: odataUrl + '?$expand=exercises($orderby=name)' },
             save: { method: 'POST', url: odataUrl + '?$expand=exercises($orderby=name)' },
             update: { method: 'PUT', params: { id: '@id' }, url: odataUrl + '(:id)' },
-            query: { method: 'GET', params: { id: '@id' }, url: odataUrl + '(:id)?$expand=exercises($orderby=name)'},
+            query: { method: 'GET', params: { id: '@id' }, url: odataUrl + '(:id)?$expand=exercises($orderby=name)' },
             remove: { method: 'DELETE', params: { id: '@id' }, url: odataUrl + '(:id)' }
         });
 
@@ -178,22 +198,22 @@
     app.value('weatherCityId', '511196');
     app.value('weatherApiId', 'c038faa1c0c6322b27ceb7ca5f333ecf');
     app.service('weatherService', ['$http', '$log', 'weatherCityId', 'weatherApiId',
-        function WeatherService($http, $log, weatherCityId, weatherApiId) {
-            $log.log('WeatherService singleton');
-            var urlTemplate = 'http://api.openweathermap.org/data/2.5/weather?id={0}&appid={1}';
-            var url = urlTemplate
-                .replace(/\{0\}/, weatherCityId)
-                .replace(/\{1\}/, weatherApiId);
+    function WeatherService($http, $log, weatherCityId, weatherApiId) {
+        $log.log('WeatherService singleton');
+        var urlTemplate = 'http://api.openweathermap.org/data/2.5/weather?id={0}&appid={1}';
+        var url = urlTemplate
+            .replace(/\{0\}/, weatherCityId)
+            .replace(/\{1\}/, weatherApiId);
 
-            function getCurrentWeather(callback) {
-                $http.get(url).success(function (data) {
-                    if (typeof callback !== 'undefined') {
-                        callback(data);
-                    }
-                });
-            }
-            return {
-                getCurrentWeather: getCurrentWeather
-            };
-        }]);
+        function getCurrentWeather(callback) {
+            $http.get(url).success(function (data) {
+                if (typeof callback !== 'undefined') {
+                    callback(data);
+                }
+            });
+        }
+        return {
+            getCurrentWeather: getCurrentWeather
+        };
+    }]);
 })();
