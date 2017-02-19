@@ -76,7 +76,7 @@
 
 
         function link(scope, element, attrs) {
-            $log.info('gym.directives.gCustomTimer.link');
+            $log.log('gym.directives.gCustomTimer.link');
             var format, timeoutId;
 
             function updateTime() {
@@ -85,7 +85,7 @@
             }
 
             scope.$watch(attrs.format, function (value) {
-                $log.info("gym.directives.scope.$watch(attrs.format)");
+                $log.log("gym.directives.scope.$watch(attrs.format)");
                 format = value;
                 updateTime();
             });
@@ -99,6 +99,39 @@
 
         return {
             link: link
+        };
+    }])
+    // http://stackoverflow.com/a/19628104/5910706
+    .directive("gLoadingIndicator", ['$log', '$http', '$animate', '$timeout', function ($log, $http, $animate, $timeout) {
+        return {
+            restrict: 'A',
+            link: function (scope, elem, attrs) {
+                var timeoutId, delay;
+
+                scope.isLoading = function () {
+                    return $http.pendingRequests.length > 0;
+                };
+
+                scope.$watch(attrs.gLoadingIndicator, function (value) {
+                    var v = parseInt(value);
+                    delay = !isNaN(v) ? v : 200;
+                });
+
+                scope.$watch(scope.isLoading, function (value) {
+                    if (value) {
+                        $log.info('show');
+                        timeoutId = $timeout(() => {
+                            $log.log('timeout elapsed');
+                            $animate.removeClass(elem, 'ng-hide');
+                        }, delay);
+                    }
+                    else {
+                        $log.info('hide');
+                        $timeout.cancel(timeoutId);
+                        $animate.addClass(elem, 'ng-hide');
+                    }
+                });
+            }
         };
     }])
     .directive("gWeather", ['$interval', 'weatherService', 'tools', function ($interval, weatherService, tools) {
