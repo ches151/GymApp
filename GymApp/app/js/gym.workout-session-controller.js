@@ -3,8 +3,8 @@
     angular.module('gym')
         .controller('WorkoutSessionCtrl', WorkoutSessionCtrl);
 
-    WorkoutSessionCtrl.$inject = ['$log', '$mdConstant', '$routeParams', '$scope', '$mdDialog', '$q', 'tools', 'header', 'massUnits', 'workoutsService', 'exerciseSetsService', 'workoutSessionsService', 'nonameService'];
-    function WorkoutSessionCtrl($log, $mdConstant, $routeParams, $scope, $mdDialog, $q, tools, header, massUnits, workoutsService, exerciseSetsService, workoutSessionsService, nonameService) {
+    WorkoutSessionCtrl.$inject = ['$log', '$mdConstant', '$routeParams', '$scope', '$mdDialog', '$q', 'tools', 'header', 'massUnits', 'workoutsService', 'exerciseSetsService', 'workoutSessionsService', 'nonameService', 'exercisesService'];
+    function WorkoutSessionCtrl($log, $mdConstant, $routeParams, $scope, $mdDialog, $q, tools, header, massUnits, workoutsService, exerciseSetsService, workoutSessionsService, nonameService, exercisesService) {
         $log.log("gym.WorkoutSessionCtrl constructor");
 
         header.canGoBack = true;
@@ -29,6 +29,7 @@
         self.setActiveExercise = setActiveExercise;
         self.filterExerciseSets = filterExerciseSets;
         self.showHistory = showHistory;
+        self.showFeedback = showFeedback;
         self.onKeydown = onKeydown;
         self.onChange = onChange;
         self.onBlur = onBlur;
@@ -41,7 +42,7 @@
             , (result) => {
                 result.value && result.value.length
                         ? continueWorkoutSession(result.value[0])
-                        : startNewWorkoutSession()
+                        : startNewWorkoutSession();
             }
             , () => { throw "Failed to obtain workout session"; });
 
@@ -97,7 +98,7 @@
 
             if (sets && sets.length) {
                 workout.exercises.forEach(function (ex, index) {
-                    if (!sets.some(set => set.exerciseId == ex.id)) {
+                    if (!sets.some(set => set.exerciseId === ex.id)) {
                         sets.push(new ExerciseSet({
                             exerciseId: ex.id,
                             workoutId: workout.id,
@@ -140,7 +141,7 @@
         }
 
         function setActiveExercise(exercise, ev) {
-            if (exercise || !(ev.path.some(function (el) { return el instanceof HTMLFormElement; })))
+            if (exercise || !ev.path.some(function (el) { return el instanceof HTMLFormElement; }))
                 self.activeExercise = exercise;
         }
 
@@ -168,7 +169,6 @@
             self.isRequestingHistory = true;
             var workoutSessionId = self.workoutSession.id;
             var exerciseName = exercise.name;
-            // TODO show progress indicator
             getExerciseHistory(exercise.id, workoutSessionId)
                 .then(function (exerciseSets) {
                     $mdDialog.show({
@@ -217,6 +217,32 @@
                 }
             });
             return deferred.promise;
+        }
+
+        function showFeedback(ev, exercise, textContent) {
+            cancelBubble(ev);
+            var exerciseName = exercise.name;
+            var confirm = $mdDialog.prompt()
+              .title(`${exercise.name} feedback`)
+              .textContent(textContent || "How do you feel?")
+              .placeholder('Feedback')
+              .ariaLabel("How do you feel?")
+              .initialValue(exercise.feedback)
+              .targetEvent(ev)
+              .cancel('Cancel')
+              .ok('OK');
+
+            $mdDialog.show(confirm).then(function (result) {
+                exercisesService.update({ id: exercise.id }, angular.merge({}, exercise, { feedback: result }), function () {
+                    exercise.feedback = result;
+                    $log.info('saved');
+                },
+                function (response) {
+                    if (response.data.error && response.data.error.innererror && response.data.error.innererror.message) {
+                        showFeedback(ev, exercise, response.data.error.innererror.message);
+                    }
+                });
+            }, function () { });
         }
 
         function onKeydown(event, exerciseId) {
@@ -287,7 +313,9 @@
         function deleteExerciseSet(set) {
             var setId = set.id;
             if (setId) {
-                exerciseSetsService.remove({ id: setId });
+                exerciseSetsService.remove({
+                    id: setId
+                });
             }
             if (self.exerciseSets.filter(s => s.exerciseId === set.exerciseId).length > 1) {
                 var index = self.exerciseSets.indexOf(set);
@@ -316,7 +344,7 @@
         function cancelBubble(e) {
             var evt = e ? e : window.event;
             if (evt.stopPropagation) evt.stopPropagation();
-            if (evt.cancelBubble != null) evt.cancelBubble = true;
+            if (evt.cancelBubble !== null) evt.cancelBubble = true;
         }
     }
     angular.module('gym')

@@ -1,19 +1,18 @@
+using System;
+using System.Data.Entity.Migrations;
+
 namespace GymWebApp.Migrations
 {
-    using System;
-    using System.Data.Entity;
-    using System.Data.Entity.Migrations;
-    using System.Linq;
-    using GymWebApp.Models;
+    using Models;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<GymWebApp.Models.MainDataModel>
+    internal sealed class Configuration : DbMigrationsConfiguration<MainDataModel>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
         }
 
-        protected override void Seed(GymWebApp.Models.MainDataModel context)
+        protected override void Seed(MainDataModel context)
         {
             var ex1 = new Exercise { Id = Guid.NewGuid(), Name = "Alternate Dumb Bell Press", DateCreated = DateTime.Now };
             var ex2 = new Exercise { Id = Guid.NewGuid(), Name = "Back Hyper Extension", DateCreated = DateTime.Now };
@@ -41,7 +40,7 @@ namespace GymWebApp.Migrations
                 new Exercise { Id = Guid.NewGuid(), Name = "Tricept Stretch", DateCreated = DateTime.Now },
                 new Exercise { Id = Guid.NewGuid(), Name = "Wrist Curl", DateCreated = DateTime.Now }
             );
-             
+
             var group1 = new Workout { Id = Guid.NewGuid(), Name = "Monday", Exercises = new System.Collections.Generic.List<Exercise> { ex1, ex2, ex3, ex4 }, DateCreated = DateTime.Now };
             var group2 = new Workout { Id = Guid.NewGuid(), Name = "Wednesday", Exercises = new System.Collections.Generic.List<Exercise> { ex5, ex6, ex7, ex8 }, DateCreated = DateTime.Now };
             var group3 = new Workout { Id = Guid.NewGuid(), Name = "Friday", Exercises = new System.Collections.Generic.List<Exercise> { ex9, ex10, ex11, ex12 }, DateCreated = DateTime.Now };

@@ -190,16 +190,6 @@ namespace GymWebApp.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // GET: odata/Workouts(5)/Exercises
-        [EnableQuery]
-        public IQueryable<Exercise> GetExercises([FromODataUri] Guid key)
-        {
-            return db.Workouts
-                .Where(m => m.Id == key)
-                .SelectMany(m => m.Exercises)
-                ;//.OrderBy(m => m.DateCreated);
-        }
-
         protected override void Dispose(bool disposing)
         {
             if (disposing)

@@ -119,12 +119,20 @@
     }]);
 
     app.factory('exercisesService', ['$resource', '$log', 'settings',
-    function workoutsSexercisesServiceervice($resource, $log, settings) {
+    function exercisesService($resource, $log, settings) {
         $log.log('gym.services.exercisesService singleton');
 
         var rootUrl = settings.rootUrl || '/';
+        var odataUrl = getFullUrl('odata/Exercises');
 
-        return $resource(getFullUrl('odata/Exercises'));
+        return $resource('', {},
+        {
+            get: { method: 'GET', url: odataUrl },
+            save: { method: 'POST', url: odataUrl },
+            update: { method: 'PUT', params: { id: '@id' }, url: odataUrl + '(:id)' },
+            query: { method: 'GET', params: { id: '@id' }, url: odataUrl + '(:id)' },
+            remove: { method: 'DELETE', params: { id: '@id' }, url: odataUrl + '(:id)' }
+        });
 
         function getFullUrl(url) {
             return rootUrl.length > 1

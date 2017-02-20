@@ -13,6 +13,9 @@
                         <span class="md-headline">{{ ex.name }}</span>
                      </md-card-title-text>
                     <md-card-title-media>
+                        <md-button class="md-icon-button" ng-style="{'color':ex.feedback?'cornflowerblue':'lightgray'}" ng-click="ctrl.showFeedback($event, ex)" aria-label="Feedback">
+                            <i class="material-icons">feedback</i>
+                        </md-button>
                         <md-button class="md-icon-button md-primary" ng-click="ctrl.showHistory($event, ex)" ng-class="{'spinner': ctrl.isRequestingHistory}" aria-label="History">
                             <i class="material-icons">history</i>
                         </md-button>

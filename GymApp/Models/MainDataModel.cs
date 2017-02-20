@@ -17,7 +17,7 @@
         // If you wish to target a different database and/or database provider, modify the 'MainDataModel' 
         // connection string in the application configuration file.
         public MainDataModel()
-            : base("name=MainDataModel")
+            : base("name=DefaultConnection")
         {
         }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -62,8 +62,11 @@
     public class Exercise : EntityBase
     {
         [Required]
-        [MaxLength(50, ErrorMessage ="Name must be no longer than 50 characters")]
+        [MaxLength(50, ErrorMessage = "The {0} field must be no longer than {1} characters")]
         public string Name { get; set; }
+
+        [StringLength(128, ErrorMessage = "The {0} field must be no longer than {1} characters")]
+        public string Feedback { get; set; }
 
         [Timestamp]
         public byte[] RowVersion { get; set; }
@@ -76,7 +79,8 @@
         [ScriptIgnore]
         public virtual List<ExerciseSet> ExerciseSets { get; set; }
 
-        public Exercise() {
+        public Exercise()
+        {
             DateCreated = DateTime.Now;
         }
 

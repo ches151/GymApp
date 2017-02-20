@@ -94,6 +94,10 @@ md-sidenav md-list {
         height: 36px;
     }
 
+.md-cancel-button {
+    order: 10;
+}
+
 md-button.menuBtn > md-icon {
     fill: white;
     width: 24px;

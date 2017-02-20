@@ -298,6 +298,10 @@
     <Compile Include="Migrations\201603112127257_Initial.Designer.cs">
       <DependentUpon>201603112127257_Initial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201702201305341_Added Exercise.Feedback.cs" />
+    <Compile Include="Migrations\201702201305341_Added Exercise.Feedback.Designer.cs">
+      <DependentUpon>201702201305341_Added Exercise.Feedback.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\MainDataModel.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -450,6 +454,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201603112127257_Initial.resx">
       <DependentUpon>201603112127257_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702201305341_Added Exercise.Feedback.resx">
+      <DependentUpon>201702201305341_Added Exercise.Feedback.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
